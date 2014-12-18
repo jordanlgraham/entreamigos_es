@@ -27,7 +27,7 @@
 	
 					if(empty($pp_footer_text))
 					{
-						$pp_footer_text = 'Copyright © 2010 Peerapong. Remove this once after purchase from the ThemeForest.net';
+						$pp_footer_text = 'Copyright © 2010 entreAmigos.';
 					}
 					
 					echo $pp_footer_text;
