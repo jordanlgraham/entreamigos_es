@@ -1,0 +1,597 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pr",
+				"progress"
+			],
+			[
+				"uploa",
+				"upload-button"
+			],
+			[
+				"back",
+				"background-size"
+			],
+			[
+				"visi",
+				"visibility"
+			],
+			[
+				"tab",
+				"tab-pane"
+			],
+			[
+				"parent",
+				"parents"
+			],
+			[
+				"cha",
+				"charTyped"
+			],
+			[
+				"co",
+				"console"
+			],
+			[
+				"con",
+				"condition"
+			],
+			[
+				"res",
+				"response"
+			],
+			[
+				"cl",
+				"class	Attr"
+			],
+			[
+				"sty",
+				"style	Attr"
+			],
+			[
+				"ol",
+				"oldStart"
+			],
+			[
+				"office",
+				"office_visits"
+			],
+			[
+				"has",
+				"hasClass"
+			],
+			[
+				"awar",
+				"awards"
+			],
+			[
+				"sele",
+				"selected"
+			],
+			[
+				"val",
+				"value"
+			],
+			[
+				"new",
+				"newElem"
+			],
+			[
+				"mont",
+				"monthName"
+			],
+			[
+				"sched",
+				"scheduled"
+			],
+			[
+				"week",
+				"weekdays"
+			],
+			[
+				"l",
+				"log"
+			],
+			[
+				"scroll",
+				"scrollTop"
+			],
+			[
+				"b",
+				"btn"
+			],
+			[
+				"remove",
+				"removeClass"
+			],
+			[
+				"prefere",
+				"preferences"
+			],
+			[
+				"fun",
+				"function"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "$eajQ(window).load(function() {\n    $eajQ('#ea_gal_calender table:not(\".fixTab\")').addClass('fixTab');\n});\n$eajQ(function() {\n    var sources = [];\n    var checkedInfo = JSON.parse(window.localStorage.getItem('ea_cal_chkd'));\n    $eajQ('.toggleCalendar').each(function() {\n        if (checkedInfo && checkedInfo.length > 0 && checkedInfo.indexOf($eajQ(this).attr('id')) !== -1) {\n            $eajQ(this).prop('checked', true);\n            sources.push({url: $eajQ(this).attr('data-url'), maxResults: $eajQ(this).attr('data-limit'), color: $eajQ(this).attr('data-color')});\n        } else if (checkedInfo !== null) {\n            $eajQ(this).prop('checked', false);\n        }\n\n    });\n\n    $eajQ('#ea_gal_calender').fullCalendar({\n        googleCalendarApiKey: $eajQ('#ea_gal_calender').data('key'),\n        eventSources: sources,\n        eventClick: function(event) {\n            // opens events in a popup window\n            window.open(event.url, 'gcalevent', 'width=700,height=600');\n            return false;\n        },\n        loading: function(bool) {\n            if (!bool)\n                $eajQ('#ea_gal_calender table:not(\".fixTab\")').addClass('fixTab')\n        },\n        eventRender: function(event, element) {\n            $eajQ(element).attr('title', event.title);\n        }\n    });\n    \n    $eajQ('.toggleCalendar').click(function() {\n    $eajQ('.toggleCalendar').each(function() {\n        if ($eajQ(this).is(':checked')) {\n            checked.push($eajQ(this).attr('id'));\n        } else {\n            checked.pop($eajQ(this).attr('id'));\n        }\n    });\n    window.localStorage.setItem('ea_cal_chkd', JSON.stringify(checked));\n    if (!$eajQ(this).is(':checked')) {\n        $eajQ('#ea_gal_calender').fullCalendar('removeEventSource', $eajQ(this).attr('data-id'));\n\n    } else {\n        $eajQ('#ea_gal_calender').fullCalendar('addEventSource', {url: $eajQ(this).attr('data-url'), maxResults: $eajQ(this).attr('data-limit'), color: $eajQ(this).attr('data-color')})\n    }\n});\n});\nvar checked = [];\n",
+			"file": "ea-calendar.js",
+			"file_size": 2013,
+			"file_write_time": 130652110031063682,
+			"settings":
+			{
+				"buffer_size": 2011,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 139.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/dev001/projects/care_it/app/assets/javascripts/vendors/general.js",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/sponsor_registration/views/index.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/javascripts/vendors/sponsor.js",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/patient_registration/views/index.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/templates/sponsor_registration/index.jst.hamlc",
+		"/home/dev001/projects/myyna-master/app.js",
+		"/home/dev001/projects/care_it/app/views/home/static.html.erb",
+		"/home/dev001/projects/care_it/app/assets/stylesheets/vendors/main.css",
+		"/home/dev001/projects/care_it/app/assets/stylesheets/vendors/authentication.css",
+		"/home/dev001/projects/care_it/app/assets/stylesheets/vendors/superslides.css",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/provider_registration/views/index.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/templates/patient_registration/index.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/sponsor/index.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/provider_registration/index.jst.hamlc",
+		"/home/dev001/Desktop/entreamigos_en_mnu/wp-content/plugins/ea-calendar/js/ea-calendar.js",
+		"/home/dev001/Desktop/entreamigos_en/.htaccess",
+		"/home/dev001/Desktop/entreamigos_en/wp-config.php",
+		"/home/dev001/projects/rockmongo/config.php",
+		"/home/dev001/projects/manage-drilling/core/public/ember/index.html",
+		"/home/dev001/projects/manage-drilling/core/routes/api/users.js",
+		"/home/dev001/projects/manage-drilling/core/controllers/api/users.js",
+		"/home/dev001/Desktop/care-it/index.html",
+		"/home/dev001/projects/care_it/app/assets/javascripts/vendors/work-schedule.js",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/provider-chat-respond.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/javascripts/popups/body-map-popup.html",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/provider/views/my_practice.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/stylesheets/vendors/custom.css",
+		"/home/dev001/Desktop/care-it/Careit_files/main.css",
+		"/home/dev001/Desktop/care-it/Careit.html",
+		"/home/dev001/projects/sleekjs/lib/session.js",
+		"/home/dev001/projects/mix-assets/public/app/app.js",
+		"/home/dev001/projects/mix-assets/app/views/index.blade.php",
+		"/home/dev001/Desktop/care-it/Careit_files/AuthenticationService.Authenticate",
+		"/home/dev001/Desktop/care-it/Careit_files/bootstrap.css",
+		"/home/dev001/projects/care_it/tmp/cache/assets/C88/6D0/sprockets%2F79cbe314307d9747224ec13628746f3c",
+		"/home/dev001/projects/care_it/tmp/cache/assets/CE3/130/sprockets%2F6bbb143ef0253c6770d99cf08839420f",
+		"/home/dev001/projects/care_it/tmp/cache/assets/CAD/140/sprockets%2Fc6676060404c5568eb9014b277fcb3e2",
+		"/home/dev001/projects/buttercoin/test/test_helper.coffee",
+		"/home/dev001/projects/buttercoin/test/test_ews.coffee",
+		"/home/dev001/projects/careit-splash/public/index.html",
+		"/home/dev001/projects/careit-splash/public/javascripts/js/skrollr.js",
+		"/home/dev001/projects/careit-splash/public/javascripts/js/animateCareItLanding.js",
+		"/home/dev001/projects/careit-splash/public/javascripts/js/skrollr.stylesheets.min.js",
+		"/home/dev001/projects/careit-splash/public/javascripts/js/svg-poly.js",
+		"/home/dev001/projects/careit-splash/public/javascripts/js/countdown.js",
+		"/home/dev001/projects/bountsQR/readme.md",
+		"/home/dev001/projects/bountsQR/BountsKeytagScanner/settings.json",
+		"/home/dev001/projects/bountsQR/installer-script.iss",
+		"/home/dev001/projects/sleekjs/Readme.md",
+		"/home/dev001/projects/bountsQR/js/bountsqr.js",
+		"/home/dev001/projects/bountsQR/js/webqr.js",
+		"/home/dev001/projects/bountsQR/.gitignore",
+		"/home/dev001/projects/bountsQR/js/bountscrpto.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/controllers/user.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/controllers/api.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/models/userModel.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/helpers/routes.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/config/routes.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/app.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/package.json",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/public/default/js/custom.js",
+		"/home/dev001/Desktop/ScattaeTagga_files/custom.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/modules/instagram/controllers/instagram.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/modules/instagram/models/igModel.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/config/config.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/lib/session.js",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/application/config/defines.js",
+		"/home/dev001/Desktop/public_html/index.html",
+		"/home/dev001/Documents/Robins/projects/scattaetagga/system/core/sleek.js",
+		"/home/dev001/projects/care_it/app/views/users/registrations/sponsors.html.erb",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/consult-details-js.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/home/payment.js.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/registration/index.jst.hamlc",
+		"/home/dev001/projects/care_it/app/views/home/preference.html.erb",
+		"/home/dev001/projects/care_it/app/views/home/_provider.html.erb",
+		"/home/dev001/projects/care_it/app/views/home/_patient.html.erb",
+		"/home/dev001/projects/care_it/app/views/users/registrations/provider.html.erb",
+		"/home/dev001/projects/care_it/app/views/users/registrations/_patient.html.erb",
+		"/home/dev001/projects/care_it/app/views/users/registrations/new.html.erb",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/text.jst.hamlc",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/manage-drilling/frontend/Brocfile.js",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/manage-drilling/frontend/app/controllers/admin/applicants.js",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/manage-drilling/frontend/app/controllers/applicants.js",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/manage-drilling/index.js",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/manage-drilling/server.js",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/manage-drilling/Procfile",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/consult-details.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/provider/views/patient.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/live.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/index.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/javascripts/vendors/provider.js",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/my.jst.hamlc",
+		"/home/dev001/Music/ScattaeTagga.html",
+		"/home/dev001/Desktop/xmppchat",
+		"/home/dev001/projects/care_it/app/assets/templates/home/text/index.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/home/index.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/home/text/text-patient.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/text-patient.jst.hamlc",
+		"/home/dev001/projects/locate-drilling/.gitignore",
+		"/home/dev001/projects/care_it/app/assets/templates/provider/monthly.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/stylesheets/vendors/provider.css",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/views/full_gallery.js.coffee",
+		"/home/dev001/projects/locate-drilling-app/app/styles/general.scss",
+		"/home/dev001/projects/locate-drilling-app/app/styles/app.scss",
+		"/home/dev001/projects/locate-drilling-app/app/templates/checkins/index.hbs",
+		"/home/dev001/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/dev001/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/dev001/projects/startup.sh",
+		"/home/dev001/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/dev001/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/dev001/projects/care_it/config/application.rb",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/views/store_category.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/views/store.js.coffee",
+		"/home/dev001/projects/locate-drilling-app/cordova/www/testem.js",
+		"/home/dev001/projects/care_it/app/assets/templates/home/text.jst.hamlc",
+		"/home/dev001/projects/locate-drilling/core/models/checkin.js",
+		"/home/dev001/projects/care_it/app/assets/templates/home/logo.jst.hamlc",
+		"/home/dev001/projects/care_it/app/assets/javascripts/vendors/custom.js",
+		"/home/dev001/projects/locate-drilling/core/controllers/api/users.js",
+		"/run/user/1001/gvfs/sftp:host=192.168.1.65/home/dev234/projects/ld_app/app/router.js",
+		"/home/dev001/projects/locate-drilling/core/models/user.js",
+		"/home/dev001/projects/care_it/app/views/home/settings.html.erb",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/routes.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/views/scheduled.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/views/confirmation.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/javascripts/backbone/home/views/availability.js.coffee",
+		"/home/dev001/projects/care_it/app/assets/templates/home/providers.jst.hamlc",
+		"/home/dev001/projects/care_it/app/views/home/sponsor.html.haml"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/home/dev001/projects/care_it/app/assets/javascripts",
+			"/home/dev001/projects/care_it",
+			"/home/dev001/projects/care_it/app/assets",
+			"/home/dev001/projects/care_it/app",
+			"/home/dev001/projects/care_it/app/assets/javascripts",
+			"/home/dev001/projects/care_it/app/assets",
+			"",
+			"/home/dev001/projects/care_it"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			".sponsor",
+			"setPre",
+			"user.",
+			".length",
+			"20",
+			"me",
+			"No use",
+			"No use'",
+			"No use",
+			"?",
+			"upload-b",
+			"calendar",
+			"calendar-day",
+			"calendar-d",
+			"flag",
+			"lname",
+			"lnaem",
+			"+ \",",
+			"','",
+			"phd",
+			"next",
+			"setPre",
+			"toggleDropdown",
+			"toggle",
+			"- for",
+			"auto",
+			"scrollTo",
+			"html,b",
+			"showOnSubmit",
+			"autota",
+			"smallIn",
+			"autotab",
+			"imageUpload",
+			"imageUPl",
+			"imageUPllo",
+			"uploaded",
+			"profile-",
+			"cert-up",
+			"upload-but",
+			"certif",
+			"console.log(data.result.id)",
+			"certificateUpload",
+			".upload-button",
+			"uploaded",
+			"options",
+			"datepic",
+			"datep",
+			"incomplete.true",
+			"address",
+			"Medical",
+			"nursing s",
+			"\");\n",
+			"http://192.168.1.90:3000",
+			"/assets/image",
+			".pn",
+			"Careit_files",
+			"time",
+			"toggleDropdown",
+			"logo",
+			"192.168.1.9",
+			"http://104.131.174.28:3000",
+			"app.ca",
+			"font",
+			"reminder",
+			"metro-b",
+			"logo",
+			"/assets",
+			"Careit_files",
+			"assets",
+			"/assets",
+			"assets",
+			"/assets",
+			"assets",
+			"populateEmail",
+			"setPreviews",
+			"input",
+			"supervisor",
+			"rates",
+			"html,b",
+			"medical S",
+			"publicat",
+			"residency-form",
+			"educatio",
+			"residency-form",
+			"personal-info-suffix",
+			"resid",
+			"scroll",
+			"email",
+			"loadCropper",
+			"clearModal",
+			"fileupload-landscape",
+			"fileupload",
+			"cropper",
+			"crop",
+			"phys",
+			".dt-fn",
+			"skrollr",
+			"options",
+			"dela",
+			"skrollable",
+			"regist",
+			"key",
+			"data(\"pre",
+			"data('pre",
+			"text_c",
+			"process.q",
+			"process.b",
+			"process.qrcode",
+			"process.bounts.qrcode",
+			"function isAlphaKey",
+			"isAlphaKey",
+			"update",
+			"sleekConfig",
+			"14",
+			"numbrOnly",
+			"nmbrOnly",
+			"ion isNumberKey",
+			"isNumberKey",
+			"addEmployee",
+			"sponsoree-message",
+			"scrollToStep",
+			"addano",
+			"er=\"0",
+			"clearQueue().stop();",
+			"$container.clearQueue().stop();",
+			"$($container).clearQueue().stop();",
+			"stop();",
+			"$container.clearQueue()"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"NA",
+			"calendar-day.weekly",
+			"smallIn.auto",
+			"incomplete",
+			"",
+			"/assets/slides/image",
+			"/assets",
+			"https://app.care.it",
+			"http://104.131.174.28:3000/assets",
+			"104.131.174.28:3000/assets",
+			"Time.now.year.downto(Time.now.year - 60)",
+			"ctrl+space",
+			"jQuery",
+			"",
+			"jQuery",
+			"",
+			"onkeyup",
+			"parent.parents('.panel').find",
+			"parent.parents('.')",
+			"parent.parents('.panel').find"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "ea-calendar.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2011,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								392,
+								392
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "ea-calendar.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/projects/care_it/care_it.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 566.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 341.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
