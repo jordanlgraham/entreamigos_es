@@ -1,15 +1,15 @@
 === Plugin Name ===
-Contributors: nathanrice, studiopress
+Contributors: nathanrice, studiopress, bgardner
 Tags: social media, social networking, social profiles
-Requires at least: 3.3
-Tested up to: 3.3.1
-Stable tag: 0.9.4
+Requires at least: 4.0
+Tested up to: 4.0
+Stable tag: 1.0.7
 
-This plugin/widget allows you to insert social icons in any widget area.
+This plugin allows you to insert social icons in any widget area.
 
 == Description ==
 
-Simple Social Icons is an easy to use, customizable way to display icons that link visitors to your various social profiles. With it, you can easily choose which profiles to link to, customize the color and size of your icons, as well as align them to the left or right, all from the widget form (no settings page necessary!).
+Simple Social Icons is an easy to use, customizable way to display icons that link visitors to your various social profiles. With it, you can easily choose which profiles to link to, customize the color and size of your icons, as well as align them to the left, center, or right, all from the widget form (no settings page necessary!).
 
 == Installation ==
 
@@ -23,6 +23,27 @@ Simple Social Icons is an easy to use, customizable way to display icons that li
 = Can I reorder the icons? =
 
 No, not at this time.
+
+= Which services are included? =
+
+* Bloglovin
+* Dribbble
+* Email
+* Facebook
+* Flickr
+* Github
+* Google+
+* Instagram
+* LinkedIn
+* Pinterest
+* RSS
+* StumbleUpon
+* Tumblr
+* Twitter
+* Vimeo
+* YouTube
+
+NOTE - The rights to each pictogram in the social extension are either trademarked or copyrighted by the respective company. Icons that are included in the social extension can be identified at http://www.entypo.com/.
 
 == Changelog ==
 
@@ -42,3 +63,30 @@ No, not at this time.
 = 0.9.4 =
 * Added YouTube icon
 * Added bottom margin to icons
+
+= 0.9.5 =
+* Added Instagram icon
+
+= 1.0.0 =
+* Switched to icon fonts, rather than images
+
+= 1.0.1 =
+* Made color and background color more specific in the CSS to avoid conflicts
+
+= 1.0.2 =
+* More specific in the CSS to avoid conflicts
+
+= 1.0.3 =
+* Added Tumblr icon
+
+= 1.0.4 =
+* Updated version in enqueue script function
+
+= 1.0.5 =
+* Updated LICENSE.txt file to include social extension
+
+= 1.0.6 =
+* Added filters
+
+= 1.0.7 =
+* Added Bloglovin icon

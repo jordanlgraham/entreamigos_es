@@ -16,3 +16,6 @@ wp-config.php
 wp-content/themes/twentyfifteen/
 wp-content/themes/twentyfourteen/
 wp-content/themes/twentythirteen/
+
+# tim thumb caches
+wp-content/themes/Pleng-Theme/cache
