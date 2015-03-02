@@ -11,3 +11,8 @@ wp-content/cache/
 wp-content/backups/
 sitemap.xml.gz
 wp-config.php
+
+# ignore wordpress stock themes
+wp-content/themes/twentyfifteen/
+wp-content/themes/twentyfourteen/
+wp-content/themes/twentythirteen/
