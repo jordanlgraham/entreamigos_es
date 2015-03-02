@@ -16,108 +16,96 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-if ( !function_exists('sys_get_temp_dir')) 
-{
-  function sys_get_temp_dir() 
-  {
-    if (!empty($_ENV['TMP'])) { return realpath($_ENV['TMP']); }
-    if (!empty($_ENV['TMPDIR'])) { return realpath( $_ENV['TMPDIR']); }
-    if (!empty($_ENV['TEMP'])) { return realpath( $_ENV['TEMP']); }
-    $tempfile = tempnam(uniqid(rand(),TRUE),'');
-    if (file_exists($tempfile)) 
-    {
-      @unlink($tempfile);
-      return realpath(dirname($tempfile));
-    }
-  }
+if ( ! function_exists( 'sys_get_temp_dir' ) ) {
+	function sys_get_temp_dir() {
+		if ( ! empty( $_ENV['TMP'] ) ) {
+			return realpath( $_ENV['TMP'] );
+		}
+		if ( ! empty( $_ENV['TMPDIR'] ) ) {
+			return realpath( $_ENV['TMPDIR'] );
+		}
+		if ( ! empty( $_ENV['TEMP'] ) ) {
+			return realpath( $_ENV['TEMP'] );
+		}
+		$tempfile = tempnam( uniqid( rand(), TRUE ), '' );
+		if ( file_exists( $tempfile ) ) {
+			@unlink( $tempfile );
+
+			return realpath( dirname( $tempfile ) );
+		}
+	}
 }
 
-function gad_get_admin_url($path = '')
-{
-  global $wp_version;
-  if (version_compare($wp_version, '3.0', '>='))
-  {
-    return get_admin_url(null, $path);
-  }
-  else
-  {
-    return get_bloginfo( 'wpurl' ) . '/wp-admin' . $path;
-  }
+function gad_get_admin_url( $path = '' ) {
+	global $wp_version;
+	if ( version_compare( $wp_version, '3.0', '>=' ) ) {
+		return get_admin_url( null, $path );
+	} else {
+		return get_bloginfo( 'wpurl' ) . '/wp-admin' . $path;
+	}
 }
 
-function gad_is_assoc($array) 
-{
-  return (is_array($array) && 0 !== count(array_diff_key($array, array_keys(array_keys($array)))));
+function gad_is_assoc( $array ) {
+	return ( is_array( $array ) && 0 !== count( array_diff_key( $array, array_keys( array_keys( $array ) ) ) ) );
 }
 
-function gad_request_error_type($ga)
-{
-  if($ga->isError())
-  {
-    if($ga->isAuthError())
-    {
-      if(get_option('gad_auth_token') == 'gad_see_oauth')
-      {
-        if (current_user_can( 'manage_options' ) )
-        {
-          echo 'You need to log in and select an account in the <a href="options-general.php?page=google-analytics-dashboard/gad-admin-options.php">options panel</a>.';
-        }
-        else
-        {
-          echo 'The administrator needs to log in and select a Google Analytics account.';
-        }
-        return 'perm';
-      }
+/**
+ * @todo DRY, same error message thrown thrice.
+ *
+ * @param $ga
+ *
+ * @return string
+ */
+function gad_request_error_type( $ga ) {
+	if ( $ga->isError() ) {
+		if ( $ga->isAuthError() ) {
+			if ( get_option( 'gad_auth_token' ) == 'gad_see_oauth' ) {
+				if ( current_user_can( 'manage_options' ) ) {
+					printf(__('You need to log in and select an account in the %s$1options panel%s$2.','google-analytics-dashboard'), '<a href="options-general.php?page=google-analytics-dashboard/gad-admin-options.php">', '</a>');
+				} else {
+					_e('The administrator needs to log in and select a Google Analytics account.','google-analytics-dashboard');
+				}
 
-      if(get_option('gad_login_pass') === false || get_option('gad_login_email') === false)
-      {
-        if (current_user_can( 'manage_options' ) )
-        {
-          echo 'You need to log in and select an account in the <a href="options-general.php?page=google-analytics-dashboard/gad-admin-options.php">options panel</a>.';
-        }
-        else
-        {
-          echo 'The administrator needs to log in and select a Google Analytics account.';
-        }
-        return 'perm';
-      }
-      else
-      {
-        $gauth = new GAuthLib('wpga-display-1.0');
-        $gauth->authenticate(get_option('gad_login_email'), get_option('gad_login_pass'), get_option('gad_services'));
+				return 'perm';
+			}
 
-        if($gauth->isError())
-        {
-          $error_message = $gauth->getErrorMessage();
-          if (current_user_can( 'manage_options' ) )
-          {
-            echo 'You need to log in and select an account in the <a href="options-general.php?page=google-analytics-dashboard/gad-admin-options.php">options panel</a>.';
-          }
-          else
-          {
-            echo 'The administrator needs to log in and select a Google Analytics account.';
-          }
-          return 'perm';
-        }
-        else
-        {
-          delete_option('gad_auth_token');
-          add_option('gad_auth_token', $gauth->getAuthToken());
-          $ga->setAuth($gauth->getAuthToken());
-          return 'retry';
-        }
-      }
-    }
-    else
-    {
-      echo 'Error gathering analytics data from Google: ' . strip_tags($ga->getErrorMessage());
-      return 'perm';
-    }
-  }
-  else
-  {
-    return 'none';
-  }
+			if ( get_option( 'gad_login_pass' ) === false || get_option( 'gad_login_email' ) === false ) {
+				if ( current_user_can( 'manage_options' ) ) {
+					printf(__('You need to log in and select an account in the %s$1options panel%s$2.','google-analytics-dashboard'), '<a href="options-general.php?page=google-analytics-dashboard/gad-admin-options.php">', '</a>');
+				} else {
+					_e('The administrator needs to log in and select a Google Analytics account.','google-analytics-dashboard');
+				}
+
+				return 'perm';
+			} else {
+				$gauth = new GAuthLib( 'wpga-display-1.0' );
+				$gauth->authenticate( get_option( 'gad_login_email' ), get_option( 'gad_login_pass' ), get_option( 'gad_services' ) );
+
+				if ( $gauth->isError() ) {
+					$error_message = $gauth->getErrorMessage();
+					if ( current_user_can( 'manage_options' ) ) {
+						printf(__('You need to log in and select an account in the %s$1options panel%s$2.','google-analytics-dashboard'), '<a href="options-general.php?page=google-analytics-dashboard/gad-admin-options.php">', '</a>');
+					} else {
+						_e('The administrator needs to log in and select a Google Analytics account.','google-analytics-dashboard');
+					}
+
+					return 'perm';
+				} else {
+					delete_option( 'gad_auth_token' );
+					add_option( 'gad_auth_token', $gauth->getAuthToken() );
+					$ga->setAuth( $gauth->getAuthToken() );
+
+					return 'retry';
+				}
+			}
+		} else {
+			echo __('Error gathering analytics data from Google: ','google-analytics-dashboard') . strip_tags( $ga->getErrorMessage() );
+
+			return 'perm';
+		}
+	} else {
+		return 'none';
+	}
 }
 
-?>
+

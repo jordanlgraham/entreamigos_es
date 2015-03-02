@@ -4,67 +4,9 @@ Plugin Name: Smart Youtube PRO
 Plugin URI: http://www.prelovac.com/vladimir/wordpress-plugins/smart-youtube
 Description: Insert YouTube videos in posts, comments and RSS feeds with ease and full customization.
 Author: Vladimir Prelovac
-Version: 4.1.7
+Version: 4.3
 Author URI: http://www.prelovac.com/vladimir/
 
-
-To-Do: 
-
-- Is there a way to have smart youtube display multiple thumbnails of youtube videos in this fashion:
-http://wordpress.org/extend/plugins/my-youtube-playlist/
-
-The author of this plugin has done a good job in birthing the concept, but is unable to really do much by way of support or add features, e.g. highlight thumbnail currently playing, flexible grouping styles of thumbnails (horizontal, vertical listing) etc.
-
-- Wondering if there's a way to have smartyoutube generate a thumbnail of the youtube video that shows up as one of the thumbnail options for the article when someone shares the blog post?
-
-- Would it be possible to overwrite the global autoplay param in a post, something like httpv://www.youtube.com/watch?v=00000000&autoplay=true; I tried to add autoplay=1 but unfortunately in the resuling html it adds autoplay=0 (the global option) and also autoplay=1
-The result is no autoplay :(
-
-- Instead of editing the shortcut, we have copied from youtube.
-I would love to have a button,
-like insert Smart YouTube Video
-A dialogue box would pop up,
-and allow me to just simply paste the link.
-Then having check boxes on the side,
-which allow me to choose whether you would like HD or not.
-thus editing the link correctly.
-
-I find this would greatly help, especiall when I help create video blogs for community provider who have very little computer background.
-
-- Please add support for it on the BuddyPress Acitivity page, currently it just shows the url (which won't work because of the httpv and httpvh)
-
-- Was wondering if it was possible for you to have the plugin take the URL for the Youtube thumbnail for the video and place it into a user defined custom field. The plugin "YoutubeThumb2CustomField" but no longer works in WP 3.0 (network).
-
-- love to see vimeo support! i have video intensive site...love Vimeo
-
-Only issue is I would LOVE to add the widget into another sidebar and I do not see this possibility. Can you have multiple Smart YouTubes? 
-
-- 1. Adding few possibilities for posting videos into post � I have great production of videos but before end of 2009 all was in 320 x 240 and after end of 2009 I start publishing video in 640 x 480 resolution. I have adjusted player video for 640 x 480 but now 320 x 240 videos are stretched across all of player window.
-
-For changes to be easy implemented � I suggest adding 2 or even 3 possibilities for playing videos � like this:
-Your original code httpv://www.youtube.com/********************
-Another version of httpv#1://www.youtube.com/********************
-Another version of httpv#2://www.youtube.com/********************
-Another version of httpv#3://www.youtube.com/********************
-
-Adding #1 after v will allow us to predefine what will be size of player for #1 or number #2 or number #3 � I think it is good idea
-
-If you don�t put #1, #2, #3 player will be those which is default (without number) � in my case that is 640 x 480.
-
-2. If some video is for �personal use� which mean somebody must be log into you tube to see it, than I suggest making possibility for login for authors of those videos � If I put all my materials to be private (up to 25 people can see it) � than I cant publish them trough this way � and allowing authors to write theirs username and password will allow that those vides can be seen on my posts. That way I can protect all my archive of video on youtube, but allow those video can be visible on my blog � which can increase hits, visits and others possibility � that possibility is visible on this plug in http://tubepress.org/ where people can use its username and password for publishing all vides from if they have account on youtube
-
-
-- marinas javascript suggestion for hq videos
-- add editor button
-- The plugin places a preview image in the RSS feed which is great, but it links to the video on http://www.youtube.com. I would like to change it so the image links to the blog post so I can generate some traffic on my blog. 
-- localization
-- the images appear under the embedded Smart Youtube videos. Is there any way to edit the z-index for Smart Youtube CSS? I
-- would like to use multiple instances of the Smart YouTube plugin. I saw the reply that said to simply use multiple calls in one instance of the widget, but that doesn't let me choose different videos for different pages. 
-- was wondering if it's possible to get a vid and playlist in a custom page template?? Is it possible to add a preview image to search results?
-- I wondered if there were a way to bring the video to the forefront layer (perhaps z-index)? I know this actually breaks good design practice in my intended use, but have a look here:
-- However, on one page I have two videos and therefore I want to add a a parameter to the second video embed URL to _not_ start automatically. Something like httpv://www.youtube.com/watch?v=xyz123&autostart=off
-- Single videos work well from wordpress on the Iphone/ipod. Is there a way to make the playlists work, just getting the ? cube instead of image.
-- I would like to "inject" automatically this preview image url in a custom field, in each post, to auto-generate the thumb on my homepage with this image.
 */
 
 
@@ -86,7 +28,7 @@ class SmartYouTube_PRO {
 	}
 	
 	function __construct() {
-		$this->local_version = '1.0'; // TODO: Change this number???
+		$this->local_version = '4.3'; 
 		
 		$this->plugin_url = trailingslashit(plugins_url(null,__FILE__));
 	
@@ -94,8 +36,7 @@ class SmartYouTube_PRO {
 		$this->key = 'smart_youtube_pro';
 		$this->first_post_on_archive = false;
 		
-		$script_path = $this->plugin_url . '/javascripts/jquery.colorbox-min.js';
-		wp_register_script( 'colorbox', $script_path );
+		
 		
 		$this->options = $this->get_options();
 							
@@ -115,16 +56,16 @@ class SmartYouTube_PRO {
 		add_action( 'plugins_loaded', array( $this, 'install' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu_items' ) );
 		add_action( 'admin_head', array( $this, 'plugin_header' ) );
-		add_action( 'wp_head', array( $this, 'post_header' ) );
-		add_action( 'wp_print_scripts', array( $this, 'load_scripts' ) );
-		add_action( 'wp_print_styles', array( $this, 'load_styles' ) );
+		if ( $this->options['ogimage'] == 'on' )
+			add_action( 'wp_head', array( $this, 'post_header' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_styles' ) );
 		add_action( 'template_redirect', array( $this, 'mark_first_post_on_archive' ) );
 		
 		register_activation_hook(__FILE__, array($this, 'install' ) );
 	}
 	
 	function post_header() {
-		if ( is_singular() ) {
 			global $wp_query;
 			$the_content = $wp_query->post->post_content;
 			$char_codes = array( '&#215;', '&#8211;' );
@@ -135,7 +76,7 @@ class SmartYouTube_PRO {
 			
 			if ( isset( $matches[0][5] ) )
 				if ( $matches[0][5] != '' )
-					echo '<meta property="og:image" content="http://i.ytimg.com/vi/' . $matches[0][5] . '/default.jpg" />';
+					echo '<meta property="og:image" content="http://i.ytimg.com/vi/' . $matches[0][5] . '/hqdefault.jpg" />';
 			
 			if ( $this->options['colorbox'] == 'on' ) {
 		?>
@@ -146,11 +87,13 @@ class SmartYouTube_PRO {
 		</script>
 		<?php
 			}
-		}
 	}
 	
 	function load_scripts() {
-		if ( $this->options["colorbox"] == 'on' && is_singular() ) {
+		$script_path = $this->plugin_url . '/javascripts/jquery.colorbox-min.js';
+		wp_register_script( 'colorbox', $script_path, array('jquery') );
+		
+		if ( $this->options["colorbox"] == 'on' ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'colorbox' );
 		}
@@ -160,7 +103,7 @@ class SmartYouTube_PRO {
 		$style_path = $this->plugin_url . '/themes/theme' . $this->options['colorbox_theme'] . '/colorbox.css';
 		wp_register_style( 'colorbox', $style_path );
 		
-		if ( $this->options["colorbox"] == 'on' && is_singular() ) {
+		if ( $this->options["colorbox"] == 'on' ) {
 			wp_enqueue_style( 'colorbox' );
 		}
 	}
@@ -255,7 +198,7 @@ class SmartYouTube_PRO {
 			
 			$this->options['posts'] = ! isset( $_POST['disp_posts'] ) ? 'off' : 'on';
 			$this->options['comments'] = ! isset( $_POST['disp_comments'] ) ? 'off' : 'on';
-			$this->options['iframe'] = ! isset( $_POST['iframe'] ) ? 'off' : 'on';
+			$this->options['iframe'] = 'on';//! isset( $_POST['iframe'] ) ? 'off' : 'on';
 			$this->options['www'] = ! isset( $_POST['www'] ) ? 'off' : 'on';
 			$this->options['http'] = ! isset( $_POST['http'] ) ? 'off' : 'on';
 			
@@ -268,6 +211,7 @@ class SmartYouTube_PRO {
 			$this->options['excerpt'] = ! isset( $_POST['excerpt'] ) ? '' : $_POST['excerpt'];
 			$this->options['excerpt_align'] = ! isset( $_POST['excerpt_align'] ) ? '' : $_POST['excerpt_align'];
 			$this->options['logoless'] = ! isset( $_POST['logoless'] ) ? 'off' : 'on';
+			$this->options['ogimage'] = ! isset( $_POST['ogimage'] ) ? 'off' : 'on';
 			$this->options['theme'] = ! isset( $_POST['theme'] ) ? '' : $_POST['theme'];
 			
 			update_option( $this->key, $this->options );
@@ -301,7 +245,7 @@ class SmartYouTube_PRO {
 		$disp_comments = $this->options['comments'] == 'on' ? 'checked="checked"' : '';
 		
 		$disp_privacy = $this->options['privacy'] ? 'checked="checked"' : '';
-		$iframe = $this->options['iframe'] =='on' ? 'checked="checked"' : '';
+		$iframe = 'on';//$this->options['iframe'] =='on' ? 'checked="checked"' : '';
 		$www = $this->options['www'] =='on' ? 'checked="checked"' : '';
 		$http = $this->options['http'] =='on' ? 'checked="checked"' : '';
 		$disp_loop = $this->options['loop'] ? 'checked="checked"' : '';
@@ -314,6 +258,7 @@ class SmartYouTube_PRO {
 		$tag = $this->options['tag'];
 		$wiziapp = $this->options['wiziapp'] == 'on' ? 'checked="checked"' : '';
 		$logoless = $this->options['logoless'] == 'on' ? 'checked="checked"' : '';
+		$ogimage = $this->options['ogimage'] == 'on' ? 'checked="ogimage"' : '';
 		$theme = isset( $this->options['theme'] ) ? $this->options['theme'] : '';
 		
 		if ( ! $disp_width ) {
@@ -332,7 +277,7 @@ class SmartYouTube_PRO {
 <link rel="stylesheet" type="text/css" href="' . $this->plugin_url . '/styleyt.css" />';
 		
 		$imgpath = $this->plugin_url.'/i';
-		$actionurl = $_SERVER['REQUEST_URI'];
+		$actionurl = stripslashes(htmlentities(strip_tags($_SERVER['REQUEST_URI'])));
 		$nonce = wp_create_nonce( 'smart-youtube' );
 		$example = htmlentities( '<div style="float:left;margin-right: 10px;">{video}</div>' );
 		
@@ -345,11 +290,24 @@ class SmartYouTube_PRO {
 	<a href="admin.php?page=syt_settings"><?php _e( 'Settings', 'smart-youtube' ); ?></a> &nbsp;|&nbsp; <a href="admin.php?page=syt_colorbox_options"><?php _e( 'Colorbox Options', 'smart-youtube' ); ?></a> &nbsp;|&nbsp; <a href="admin.php?page=syt_about"><?php _e( 'About', 'smart-youtube' ); ?></a>
 	<div id="poststuff" style="margin-top:10px;">
 		<div id="sideblock" style="float:right;width:270px;margin-left:10px;">
-			<iframe width=270 height=800 frameborder="0" src="http://www.prelovac.com/plugin/news.php?id=0&utm_source=plugin&utm_medium=plugin&utm_campaign=Smart%2BYoutube"></iframe>
+			<div class="ad">
+						<a href="https://managewp.com/?utm_source=Plugins&amp;utm_medium=Banner&amp;utm_content=mwp250_2&amp;utm_campaign=SmartYoutube" title="ManageWP.com - Manage your sites from one dashboard"><img src="<?php echo plugins_url('/i/mwp250_2.png', __FILE__) ?>" alt="ManageWP.com - Manage Multiple WordPress Sites"></a>
+				</div>
 		</div> 
 		<div id="mainblock" style="width:710px">
 			<div class="dbx-content">
-				<h2 id="usageHeader"><?php _e( 'Usage <span style="font-size:small">[<a href="#">view instructions</a>]</span>', 'smart-youtube' ); ?></h2>
+				<h2 id="usageHeader"><?php _e( 'Usage <span>[<a href="#">View full instructions</a>]</span>', 'smart-youtube' ); ?></h2>
+			
+				<h3>Basic Usage</h3>
+				<p>The plugin offers	more features than built-in WordPress video embed feature.</p>
+				<p>In order for the plugin to work you must change the pasted URL to either <strong>httpv://</strong> or <strong>httpvh://</strong> (HD video)</p>
+				
+				<p>For example:	<br/>
+				httpv://www.youtube.com/watch?v=OWfksMD4PAg
+				</p>
+				
+				
+			
 				<div id="usage" style="display:none">
 					<p><?php _e( 'To use the video in your posts, paste YouTube video URL with <strong>httpv://</strong> (notice the \'v\').', 'smart-youtube' ); ?> </p>
 					<p><?php _e( '<strong>Important:</strong> The URL should just be copied into your post normally and the letter \'v\' added, do not create a clickable link!', 'smart-youtube' ); ?></p>
@@ -373,8 +331,7 @@ class SmartYouTube_PRO {
 					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo $nonce; ?>" />
 					<h2><?php _e( 'Options', 'smart-youtube' ); ?></h2>
 					<p><?php _e( 'Smart Youtube is powerful and free WordPress plugin for embeding videos into your blog. ', 'smart-youtube' ); ?></p>
-					
-					<p><?php _e( 'From the same author: <a href="http://managewp.com" target="_blank">ManageWP.com</a> - Wordpress service that helps you manage all your WordPress sites from one location.', 'smart-youtube' ); ?></p>
+										
 					<p><?php _e( 'You can adjust the way your embeded youtube videos behave in the options below.', 'smart-youtube' ); ?></p>
 					<h3><?php _e( 'Video settings', 'smart-youtube' ); ?></h3>
 					<div>
@@ -386,10 +343,7 @@ class SmartYouTube_PRO {
 						<label for="check4"><?php _e( 'Display videos in comments', 'smart-youtube' ); ?></label>
 					</div>
 					<br />
-					<div>
-						<input id="iframe" type="checkbox" name="iframe" <?php echo $iframe; ?> />
-						<label for="iframe"><?php _e( 'Use IFRAME embed code', 'smart-youtube' ); ?></label> [<a target="_blank" href="http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html">?</a>]
-					</div>
+					
 					<h3><?php _e( 'Video Appearence', 'smart-youtube' ); ?></h3>
 					<p class="instruct">
 						<?php _e( 'Video template. Default is just {video}.', 'smart-youtube' ); ?><br />
@@ -497,6 +451,7 @@ class SmartYouTube_PRO {
 						<input type="checkbox" id="disp_info" name="disp_info" <?php echo $disp_info; ?> /><label for="disp_info"><?php _e( 'Remove Titles & Ratings', 'smart-youtube' ); ?></label><br />
 						<input type="checkbox" id="disp_ann" name="disp_ann" <?php echo $disp_ann; ?> /><label for="disp_ann"><?php _e( 'Remove Annotations', 'smart-youtube' ); ?></label><br />
 						<input type="checkbox" id="logoless" name="logoless" <?php echo $logoless; ?> /><label for="logoless"><?php _e( 'Hide YouTube Logo', 'smart-youtube' ); ?></label><br />
+						<input type="checkbox" id="ogimage" name="ogimage" <?php echo $ogimage; ?> /><label for="ogimage"><?php _e( 'Output og:image tag with the Youtube image', 'smart-youtube' ); ?></label><br />
 						<label for="theme"><?php _e( 'Theme (YouTube only):', 'smart-youtube' ); ?></label>
 						<select id="theme" name="theme" />
 							<option value="dark" <?php echo ( ( $theme == 'dark' ) ? 'selected="yes"' : '' ); ?>><?php _e( 'Dark', 'smart-youtube' ); ?></option>
@@ -516,6 +471,7 @@ class SmartYouTube_PRO {
 							<select id="disp_excerpt_align" name="excerpt_align">
 								<option value="left" <?php echo ( ( $excerpt_align == 'left' ) ? 'selected="yes"' : '' ); ?>><?php _e( 'Left', 'smart-youtube' ); ?></option>
 								<option value="right" <?php echo ( ( $excerpt_align == 'right' ) ? 'selected="yes"' : '' ); ?>><?php _e( 'Right', 'smart-youtube' ); ?></option>
+                                <option value="center" <?php echo ( ( $excerpt_align == 'center' ) ? 'selected="yes"' : '' ); ?>><?php _e( 'Center', 'smart-youtube' ); ?></option>                                
 							</select>
 						</div>
 					</div>
@@ -525,10 +481,7 @@ class SmartYouTube_PRO {
 					<input id="tag" type="text" name="tag" value="<?php echo $tag; ?>" />
 					<label for="tag"><?php _e( 'Custom code', 'smart-youtube' ); ?></label>
 					 
-					<h3><?php _e( 'WiziApp support', 'smart-youtube' ); ?></h3>
-					<p><?php _e( 'This will integrate your video seamlessly with WiziApp', 'smart-youtube' ); ?></p>
-					<input id="wiziapp" type="checkbox" name="wiziapp" <?php echo $wiziapp; ?> />
-					<label for="wiziapp"><?php _e( 'Enable WiziApp support', 'smart-youtube' ); ?></label>
+				
 					<h3><?php _e( 'xHTML validation', 'smart-youtube' ); ?></h3>
 					<p class="instruct"><?php _e( 'Enabling the option below will change default YouTube code to be xHTML valid. (videos may not work for Iphone users)', 'smart-youtube' ); ?></p>
 					<input id="valid" type="checkbox" name="valid" <?php echo $valid; ?> />
@@ -540,6 +493,10 @@ class SmartYouTube_PRO {
 					<label for="check2"><?php _e( 'Display video link in RSS feed', 'smart-youtube' ); ?></label><br />
 					<input id="check1" type="checkbox" name="disp_img" <?php echo $disp_img; ?> />
 					<label for="check1"><?php _e( 'Display video preview image in RSS feed', 'smart-youtube' ); ?></label>
+						<h3><?php _e( 'WiziApp support', 'smart-youtube' ); ?></h3>
+					<p><?php _e( 'This will integrate your video seamlessly with WiziApp', 'smart-youtube' ); ?></p>
+					<input id="wiziapp" type="checkbox" name="wiziapp" <?php echo $wiziapp; ?> />
+					<label for="wiziapp"><?php _e( 'Enable WiziApp support', 'smart-youtube' ); ?></label>
 					<div class="submit"><input type="submit" name="Submit" value="<?php _e( 'Update options', 'smart-youtube' ); ?>" /></div>
 				</form>
 			</div>
@@ -563,7 +520,7 @@ class SmartYouTube_PRO {
 		}
 		
 		$imgpath = $this->plugin_url . '/i';
-		$actionurl = $_SERVER['REQUEST_URI'];
+		$actionurl = stripslashes(htmlentities(strip_tags($_SERVER['REQUEST_URI'])));
 		
 		$this->options = $this->get_options();
 	?>
@@ -573,12 +530,15 @@ class SmartYouTube_PRO {
 		<a href="admin.php?page=syt_settings"><?php _e( 'Settings', 'smart-youtube' ); ?></a> &nbsp;|&nbsp; <a href="admin.php?page=syt_colorbox_options"><?php _e( 'Colorbox Options', 'smart-youtube' ); ?></a> &nbsp;|&nbsp; <a href="admin.php?page=syt_about"><?php _e( 'About', 'smart-youtube' ); ?></a>
 		<div id="poststuff" style="margin-top:10px;">
 			<div id="sideblock" style="float:right;width:270px;margin-left:10px;">		  
-				<iframe width=270 height=800 frameborder="0" src="http://www.prelovac.com/plugin/news.php?id=2&utm_source=plugin&utm_medium=plugin&utm_campaign=SEO%2BFriendly%2BImages%2BPRO"></iframe>
+				<div class="ad">
+						<a href="https://managewp.com/?utm_source=Plugins&amp;utm_medium=Banner&amp;utm_content=mwp250_2&amp;utm_campaign=SmartYoutube" title="ManageWP.com - Manage your sites from one dashboard"><img src="<?php echo plugins_url('/i/mwp250_2.png',__FILE__) ?>" alt="ManageWP.com - Manage Multiple WordPress Sites"></a>
+				</div>
 			</div>
 		</div>
 		<div id="mainblock" class="submit">
 			<div class="dbx-content">
 				<h2><?php _e( 'Colorbox Options', 'smart-youtube' ); ?></h2>
+				<p>If you enable Show video in Colorbox on the settings screen, your videos can be displayed in a beautiful ColorBox overlay. Choose a theme here.</p>
 				<br />
 				<form name="sytform" action="<?php echo $actionurl; ?>" method="post">
 					<input type="hidden" name="submitted" value="1" />
@@ -591,7 +551,7 @@ class SmartYouTube_PRO {
 						</select>
 					</div>
 					<div>
-						<label for="screenshot_image"><?php _e( 'Theme screenshot:', 'smart-youtube' ); ?></label>
+						<label for="screenshot_image"><?php _e( 'Theme preview', 'smart-youtube' ); ?></label>
 						<div id="screenshot_image">
 							<img src="<?php echo $this->plugin_url . '/screenshots/screenshot-' . $this->options['colorbox_theme'] . '.jpg'; ?>" />
 						</div>
@@ -612,10 +572,10 @@ class SmartYouTube_PRO {
 		
 		$upd_msg = "";
 		
-		$actionurl = $_SERVER['REQUEST_URI'];
+		$actionurl = stripslashes(htmlentities(strip_tags($_SERVER['REQUEST_URI'])));
 		$nonce = wp_create_nonce( 'smart-youtube' );
 		
-		$lic_msg = '<p>Welcome to ' . __( 'Smart YouTube PRO', 'smart-youtube' ) . '.</p>';
+		$lic_msg = '<p>Welcome to ' . __( 'Smart YouTube PRO', 'smart-youtube' ) . '.</p><p>Thank you for using my plugin, if you find it useful please <a href="https://wordpress.org/plugins/smart-youtube/">rate it</a>.</p>';
 	?>
 	<div class="wrap">
 		<?php screen_icon(); ?>
@@ -624,7 +584,9 @@ class SmartYouTube_PRO {
 		<div id="poststuff" style="margin-top:10px;">
 		
 			<div id="sideblock" style="float:right;width:270px;margin-left:10px;">		  
-				<iframe width=270 height=800 frameborder="0" src="http://www.prelovac.com/plugin/news.php?id=2&utm_source=plugin&utm_medium=plugin&utm_campaign=SEO%2BFriendly%2BImages%2BPRO"></iframe>
+				<div class="ad">
+						<a href="https://managewp.com/?utm_source=Plugins&amp;utm_medium=Banner&amp;utm_content=mwp250_2&amp;utm_campaign=SmartYoutube" title="ManageWP.com - Manage your sites from one dashboard"><img src="<?php echo plugins_url('/i/mwp250_2.png',__FILE__) ?>" alt="ManageWP.com - Manage Multiple WordPress Sites"></a>
+				</div>
 			</div>
 		</div>
 		<div id="mainblock" class="submit">
@@ -666,7 +628,7 @@ class SmartYouTube_PRO {
 		
 		$context = $side ? 'side' : 'post';
 		
-		preg_match_all( "/((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtube\.com\/watch(\?v\=|\/v\/|#!v=)([a-zA-Z0-9\-\_]{11})([^<\s]*))|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtu\.be\/([a-zA-Z0-9\-\_]{11}))|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?metacafe\.com\/watch\/([a-zA-Z0-9\-\_]{7})\/([^<^\/\s]*)([\/])?)|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?vimeo\.com\/([a-zA-Z0-9\-\_]{8})([\/])?)|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?liveleak\.com\/view(\?i\=)([a-zA-Z0-9\-\_]*))|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?facebook\.com\/video\/video.php\?v\=([a-zA-Z0-9\-\_]*))|((http(vp|vhp)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtube\.com\/(view_play_list\?p\=|playlist\?list\=)([a-zA-Z0-9\-\_]{18,34})([^<\s]*))/", $the_content, $matches, PREG_SET_ORDER );
+		preg_match_all( "/((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtube\.com\/watch(\?v\=|\/v\/|#!v=)([a-zA-Z0-9\-\_]{11})([^<\s]*))|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtu\.be\/([a-zA-Z0-9\-\_]{11}))|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?metacafe\.com\/watch\/([a-zA-Z0-9\-\_]{7})\/([^<^\/\s]*)([\/])?)|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?vimeo\.com\/([a-zA-Z0-9\-\_]{8,9})([\/])?)|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?liveleak\.com\/view(\?i\=)([a-zA-Z0-9\-\_]*))|((http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?facebook\.com\/video\/video.php\?v\=([a-zA-Z0-9\-\_]*))|((http(vp|vhp)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtube\.com\/(view_play_list\?p\=|playlist\?list\=)([a-zA-Z0-9\-\_]{18,34})([^<\s]*))/", $the_content, $matches, PREG_SET_ORDER );
 		
 		foreach ( $matches as $match ) {
 			if ( $match[1] != '' ) {
@@ -915,7 +877,11 @@ EOT;
 				return $the_content;
 			}
 			if ( isset( $result ) ) {
-				$the_content = '<div style="float:' . $this->options["excerpt_align"] . ';padding-' . ( $this->options["excerpt_aign"] == 'left' ? 'right' : 'left' ) . ':10px;">' . $result . '</div>' . $the_content . '<div style="clear:both"></div>';
+                if ($this->options['excerpt_align'] == 'center') {
+                    $the_content = '<div style="float:' . $this->options["excerpt_align"] . ';padding-' . ( $this->options["excerpt_aign"] == 'left' ? 'right' : 'left' ) . ':10px;">' . $result . '</div>' . $the_content . '<div style="clear:both"></div>';
+                }else {
+                    $the_content = '<div style="padding: 10px 0">' . $result . '</div>' . $the_content . '<div style="clear:both"></div>';
+                }
 			}
 		}
 		
@@ -1012,10 +978,10 @@ EOT;
 			$ll = '';
 		}
 		
-		$root_url = $this->options['privacy'] ? 'http://www.youtube-nocookie.com' : 'http://www.youtube.com'; 
+		$root_url = $this->options['privacy'] ? '//www.youtube-nocookie.com' : '//www.youtube.com'; 
 		
 		if ( $excerpt == 'thm' ) {
-			$img_url = htmlspecialchars( "http://img.youtube.com/vi/$file/0.jpg" );
+			$img_url = htmlspecialchars( "//img.youtube.com/vi/$file/0.jpg" );
 			global $post;
 			$post_url = get_permalink( $post->ID );
 			$yte_tag = <<<EOT
@@ -1024,7 +990,7 @@ EOT;
 		}
 		
 		if ( ( ( is_home() || is_front_page() || is_archive() ) && $context == 'post' && $thumb == 'on' ) || ( $context == 'thumb' ) || ( $context == 'excerpt' && $excerpt == 'thm' ) ) {
-			$img_url = htmlspecialchars( "http://img.youtube.com/vi/$file/0.jpg" );
+			$img_url = htmlspecialchars( "//img.youtube.com/vi/$file/0.jpg" );
 			if ( $context == 'excerpt' && $excerpt == 'thm' ) {
 				global $post;
 				$post_url = get_permalink( $post->ID );
@@ -1048,10 +1014,10 @@ EOT;
 <span class="youtube"><iframe class="youtube-player" src="$video_url" width="$width" height="$height" frameborder="0" allowfullscreen></iframe></span>
 EOT;
 			} elseif ( $valid == 'off' || strpos( $_SERVER['HTTP_USER_AGENT'], 'iPhone' ) === TRUE || strpos( $_SERVER['HTTP_USER_AGENT'], 'iPod' ) === TRUE || strpos( $_SERVER['HTTP_USER_AGENT'], 'iPad' ) === TRUE ) {
-				if ( $context == 'post' && $colorbox == 'on' && is_singular() ) {
-					$img_url = htmlspecialchars( "http://img.youtube.com/vi/$file/0.jpg" );
+				if ( $context == 'post' && $colorbox == 'on' ) {
+					$img_url = htmlspecialchars( "//img.youtube.com/vi/$file/0.jpg" );
 					$yte_tag = <<<EOT
-<a class="colorbox_video" href="$video_url"><img width="$width" height="$height" src="$img_url" /></iframe></span>
+<a class="colorbox_video" href="$video_url"><img width="$width" height="$height" src="$img_url" /></a></span>
 EOT;
 				} else if ( $this->options['iframe'] == 'on' )
 					$yte_tag = <<<EOT
@@ -1063,10 +1029,10 @@ EOT;
 <param name="allowFullScreen" value="true" /><embed wmode="opaque" src="$video_url" type="application/x-shockwave-flash" allowfullscreen="true" width="$width" height="$height"></embed><param name="wmode" value="opaque" /></object></span>
 EOT;
 			} else {
-				if ( $context == 'post' && $colorbox == 'on' && is_singular() ) {
-					$img_url = htmlspecialchars( "http://img.youtube.com/vi/$file/0.jpg" );
+				if ( $context == 'post' && $colorbox == 'on' ) {
+					$img_url = htmlspecialchars( "//img.youtube.com/vi/$file/0.jpg" );
 					$yte_tag = <<<EOT
-<a class="colorbox_video" href="$video_url"><img width="$width" height="$height" src="$img_url" /></iframe></span>
+<a class="colorbox_video" href="$video_url"><img width="$width" height="$height" src="$img_url" /></a></span>
 EOT;
 				} else if ( $this->options['iframe'] == 'on' ) {
 					$yte_tag = <<<EOT
@@ -1086,9 +1052,9 @@ EOT;
 				$high = '&fmt=18';
 			}
 			if ( $playlist )
-				$url = 'http://www.youtube.com/playlist?list=';
+				$url = '//www.youtube.com/playlist?list=';
 			else
-				$url = 'http://www.youtube.com/watch?v=';
+				$url = '//www.youtube.com/watch?v=';
 				
 			$yte_tag = '';
 			if ( $this->options['link'] == 'on' ) {
@@ -1096,7 +1062,7 @@ EOT;
 			}
 			
 			if ( $this->options['img'] == 'on' ) {
-				$yte_tag .= '<p><a href="' . $url . $file . $high. '"><img src="http://img.youtube.com/vi/' . $file . '/default.jpg" width="130" height="97" border=0></a></p>';
+				$yte_tag .= '<p><a href="' . $url . $file . $high. '"><img src="//img.youtube.com/vi/' . $file . '/default.jpg" width="130" height="97" border=0></a></p>';
 			}
 			
 			 if ($this->options['link'] == 'off' && $this->options['img'] == 'off')
@@ -1166,10 +1132,10 @@ EOT;
 <img src="$img_url" height="$height" width="$width" />
 EOT;
 			}
-		} else if ( $context == 'post' && $colorbox == 'on' && is_singular() ) {
+		} else if ( $context == 'post' && $colorbox == 'on' ) {
 			$img_url = htmlspecialchars( "http://www.metacafe.com/thumb/$file.jpg" );
 			$yte_tag = <<<EOT
-<a class="colorbox_video" href="http://www.metacafe.com/fplayer/$file/$name.swf"><img width="$width" height="$height" src="$img_url" /></iframe></span>
+<a class="colorbox_video" href="http://www.metacafe.com/fplayer/$file/$name.swf"><img width="$width" height="$height" src="$img_url" /></a></span>
 EOT;
 		} else {
 			$yte_tag = <<<EOT
@@ -1247,7 +1213,7 @@ EOT;
 EOT;
 			}
 		}
-		else if ( $context == 'post' && $colorbox == 'on' && is_singular() ) {
+		else if ( $context == 'post' && $colorbox == 'on' ) {
 			$thumbs = unserialize( file_get_contents( "http://vimeo.com/api/v2/video/$file.php" ) );
 			$img_url = htmlspecialchars( $thumbs[0]['thumbnail_large'] );
 			$yte_tag = <<<EOT
@@ -1297,10 +1263,10 @@ EOT;
 <img src="$img_url" height="$height" width="$width" />
 EOT;
 			}
-		} else if ( $context == 'post' && $colorbox == 'on' && is_singular() ) {
+		} else if ( $context == 'post' && $colorbox == 'on' ) {
 			$img_url = htmlspecialchars( $this->plugin_url . '/img/default.jpg' );
 			$yte_tag = <<<EOT
-<a class="colorbox_video" href="http://www.liveleak.com/e/$file"><img width="$width" height="$height" src="$img_url" /></iframe></span>
+<a class="colorbox_video" href="http://www.liveleak.com/e/$file"><img width="$width" height="$height" src="$img_url" /></a></span>
 EOT;
 		} else {
 			$yte_tag = <<<EOT
@@ -1346,10 +1312,10 @@ EOT;
 <img src="$img_url" height="$height" width="$width" />
 EOT;
 			}
-		} else if ( $context == 'post' && $colorbox == 'on' && is_singular() ) {
+		} else if ( $context == 'post' && $colorbox == 'on' ) {
 			$img_url = htmlspecialchars( $this->plugin_url . '/img/default.jpg' );
 			$yte_tag = <<<EOT
-<a class="colorbox_video" href="http://www.facebook.com/v/$file"><img width="$width" height="$height" src="$img_url" /></iframe></span>
+<a class="colorbox_video" href="http://www.facebook.com/v/$file"><img width="$width" height="$height" src="$img_url" /></a></span>
 EOT;
 		} else {
 			$yte_tag = <<<EOT
@@ -1404,6 +1370,7 @@ EOT;
 			'excerpt' => 'not',
 			'logoless' => 'on',
 			'wiziapp' => 'off',
+			'ogimage' => 'off',
 			'theme' => 'dark'
 		);
 		$saved = get_option( $this->key );
@@ -1412,6 +1379,7 @@ EOT;
 			foreach ( $saved as $key => $option ) {
 				$options[$key] = $option;
 			}
+			$options['iframe']='on';
 		}
 			  
 		if ( $saved != $options ) {
@@ -1497,7 +1465,7 @@ function syt_show_thumb( $post_id ) {
 	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtube\.com\/watch(\?v\=|\/v\/|#!v=)([a-zA-Z0-9\-\_]{11})([^<\s]*)/", $content, $matches['youtube.com'], PREG_SET_ORDER );
 	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?youtu\.be\/([a-zA-Z0-9\-\_]{11})/", $content, $matches['youtu.be'], PREG_SET_ORDER );
 	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?metacafe\.com\/watch\/([a-zA-Z0-9\-\_]{7})\/([^<^\/\s]*)([\/])?/", $content, $matches['metacafe.com'], PREG_SET_ORDER );
-	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?vimeo\.com\/([a-zA-Z0-9\-\_]{8})([\/])?/", $content, $matches['vimeo.com'], PREG_SET_ORDER );
+	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?vimeo\.com\/([a-zA-Z0-9\-\_]{8,9})([\/])?/", $content, $matches['vimeo.com'], PREG_SET_ORDER );
 	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?liveleak\.com\/view(\?i\=)([a-zA-Z0-9\-\_]*)/", $content, $matches['liveleak.com'], PREG_SET_ORDER );
 	preg_match_all( "/(http(v|vh|vhd)?:\/\/)?([a-zA-Z0-9\-\_]+\.|)?facebook\.com\/video\/video.php\?v\=([a-zA-Z0-9\-\_]*)/", $content, $matches['facebook.com'], PREG_SET_ORDER );
 	

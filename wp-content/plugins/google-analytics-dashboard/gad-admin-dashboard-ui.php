@@ -16,241 +16,269 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once(dirname(__FILE__) . '/gad-data-model.php');
+require_once( dirname( __FILE__ ) . '/gad-data-model.php' );
 
-class GADAdminDashboardUI
-{
-  var $ga_data;
+class GADAdminDashboardUI {
+	var $ga_data;
 
-  function GADAdminDashboardUI()
-  {
-    $this->__construct();
-  }
+	function GADAdminDashboardUI() {
+		$this->__construct();
+	}
 
-  function __construct()
-  {
-  }
+	function __construct() {
+	}
 
-  function display_all($bs_toggle_option, $gs_toggle_option, $es_toggle_option)
-  {
-?>
+	function display_all( $bs_toggle_option, $gs_toggle_option, $es_toggle_option ) {
+		?>
 
-  <!--[if IE]><style>
-  .ie_layout {
-    height: 0;
-    he\ight: auto;
-    zoom: 1;
-  }
-  </style><![endif]-->
+		<!--[if IE]>
+		<style>
+			.ie_layout {
+				height: 0;
+				he\ight: auto;
+				zoom: 1;
+			}
+		</style><![endif]-->
 
-    <div style="text-align: center;">
+		<div style="text-align: center;">
 
-      <?php $this->display_chart(); ?>
+			<?php $this->display_chart(); ?>
 
-      <?php $this->display_base_stats($bs_toggle_option); ?>
+			<?php $this->display_base_stats( $bs_toggle_option ); ?>
 
-      <?php
-        if( get_option('gad_goal_one') !== false || get_option('gad_goal_two') !== false ||
-            get_option('gad_goal_three') !== false || get_option('gad_goal_four') !== false ) 
-        {
-          $this->display_goals($gs_toggle_option);
-        }
-      ?>
+			<?php
+			if ( get_option( 'gad_goal_one' ) !== false || get_option( 'gad_goal_two' ) !== false ||
+					get_option( 'gad_goal_three' ) !== false || get_option( 'gad_goal_four' ) !== false
+			) {
+				$this->display_goals( $gs_toggle_option );
+			}
+			?>
 
-      <?php $this->display_extended_stats($es_toggle_option); ?>
+			<?php $this->display_extended_stats( $es_toggle_option ); ?>
 
-    </div>
+		</div>
 
-<?php
-  }
+	<?php
+	}
 
-  function display_chart()
-  {
-?>
+	function display_chart() {
+		?>
 
-    <div style="padding-bottom: 5px;">
-      <?php echo $this->ga_data->start_date ?> to <?php echo $this->ga_data->end_date ?> <br/>
-      <img width="450" height="200" src="<?php echo $this->ga_data->create_google_chart_url(450, 200); ?>"/>
-    </div>
+		<div style="padding-bottom: 5px;">
+			<?php echo $this->ga_data->start_date ?> to <?php echo $this->ga_data->end_date ?> <br />
+			<img width="450" height="200" src="<?php echo $this->ga_data->create_google_chart_url( 450, 200 ); ?>" />
+		</div>
 
-<?php
-  }
+	<?php
+	}
 
-  function display_base_stats($bs_toggle_option)
-  {
-?>
+	function display_base_stats( $bs_toggle_option ) {
+		?>
 
-    <div style="position: relative; padding-top: 5px;" class="ie_layout">
-      <h4 style="position: absolute; top: 6px; left: 10px; background-color: #fff; padding-left: 5px; padding-right: 5px;">Base Stats <a id="toggle-base-stats" href="#">(<?php echo $bs_toggle_option; ?>)</a></h4>
-      <hr style="border: solid #eee 1px"/><br/>
-    </div>
+		<div style="position: relative; padding-top: 5px;" class="ie_layout">
+			<h4 style="position: absolute; top: 6px; left: 10px; background-color: #fff; padding-left: 5px; padding-right: 5px;"><?php _e('Base Stats','google-analytics-dashboard'); ?>
+				<a id="toggle-base-stats" href="#">(<?php echo $bs_toggle_option; ?>)</a></h4>
+			<hr style="border: solid #eee 1px" />
+			<br />
+		</div>
 
-    <div>
-      <div id="base-stats" <?php if($bs_toggle_option == 'show') echo 'style="display: none"'; ?>>
-      <div style="text-align: left;">
-        <div style="width: 50%; float: left;">
-          <table>
-            <tr><td align="right"><?php echo number_format($this->ga_data->summary_data['value']['ga:visits']); ?></td><td></td><td>Visits</td></tr>
-            <tr><td align="right"><?php echo number_format($this->ga_data->total_pageviews); ?></td><td></td><td>Pageviews</td></tr>
-            <tr><td align="right"><?php echo (isset($this->ga_data->summary_data['value']['ga:visits']) && $this->ga_data->summary_data['value']['ga:visits'] > 0) ? round($this->ga_data->total_pageviews / $this->ga_data->summary_data['value']['ga:visits'], 2) : '0'; ?></td><td></td><td>Pages/Visit</td></tr>
-          </table>
-        </div>
-        <div style="width: 50%; float: right;">
-          <table>
-            <tr><td align="right"><?php echo (isset($this->ga_data->summary_data['value']['ga:entrances']) && $this->ga_data->summary_data['value']['ga:entrances'] > 0) ? round($this->ga_data->summary_data['value']['ga:bounces'] / $this->ga_data->summary_data['value']['ga:entrances'] * 100, 2) : '0'; ?>%</td><td></td><td>Bounce Rate</td></tr>
-            <tr><td align="right"><?php echo (isset($this->ga_data->summary_data['value']['ga:visits']) && $this->ga_data->summary_data['value']['ga:visits']) ? $this->convert_seconds_to_time($this->ga_data->summary_data['value']['ga:timeOnSite'] / $this->ga_data->summary_data['value']['ga:visits']) : '00:00:00'; ?></td><td></td><td>Avg. Time on Site</td></tr>
-            <tr><td align="right"><?php echo (isset($this->ga_data->summary_data['value']['ga:visits']) && $this->ga_data->summary_data['value']['ga:visits'] > 0) ? round($this->ga_data->summary_data['value']['ga:newVisits'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2) : '0'; ?>%</td><td></td><td>% New Visits</td></tr>
-          </table>
-        </div>
-        <br style="clear: both"/>
-      </div>
-      </div>
+		<div>
+			<div id="base-stats" <?php if ( $bs_toggle_option == 'show' ) {
+				echo 'style="display: none"';
+			} ?>>
+				<div style="text-align: left;">
+					<div style="width: 50%; float: left;">
+						<table>
+							<tr>
+								<td align="right"><?php echo number_format( $this->ga_data->summary_data['value']['ga:visits'] ); ?></td>
+								<td></td>
+								<td><?php _e('Visits','google-analytics-dashboard'); ?></td>
+							</tr>
+							<tr>
+								<td align="right"><?php echo number_format( $this->ga_data->total_pageviews ); ?></td>
+								<td></td>
+								<td><?php _e('Pageviews','google-analytics-dashboard'); ?></td>
+							</tr>
+							<tr>
+								<td align="right"><?php echo ( isset( $this->ga_data->summary_data['value']['ga:visits'] ) && $this->ga_data->summary_data['value']['ga:visits'] > 0 ) ? round( $this->ga_data->total_pageviews / $this->ga_data->summary_data['value']['ga:visits'], 2 ) : '0'; ?></td>
+								<td></td>
+								<td><?php _e('Pages/Visit','google-analytics-dashboard'); ?></td>
+							</tr>
+						</table>
+					</div>
+					<div style="width: 50%; float: right;">
+						<table>
+							<tr>
+								<td align="right"><?php echo ( isset( $this->ga_data->summary_data['value']['ga:entrances'] ) && $this->ga_data->summary_data['value']['ga:entrances'] > 0 ) ? round( $this->ga_data->summary_data['value']['ga:bounces'] / $this->ga_data->summary_data['value']['ga:entrances'] * 100, 2 ) : '0'; ?>%</td>
+								<td></td>
+								<td><?php _e('Bounce Rate','google-analytics-dashboard'); ?></td>
+							</tr>
+							<tr>
+								<td align="right"><?php echo ( isset( $this->ga_data->summary_data['value']['ga:visits'] ) && $this->ga_data->summary_data['value']['ga:visits'] ) ? $this->convert_seconds_to_time( $this->ga_data->summary_data['value']['ga:timeOnSite'] / $this->ga_data->summary_data['value']['ga:visits'] ) : '00:00:00'; ?></td>
+								<td></td>
+								<td><?php _e('Avg. Time on Site','google-analytics-dashboard'); ?></td>
+							</tr>
+							<tr>
+								<td align="right"><?php echo ( isset( $this->ga_data->summary_data['value']['ga:visits'] ) && $this->ga_data->summary_data['value']['ga:visits'] > 0 ) ? round( $this->ga_data->summary_data['value']['ga:newVisits'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2 ) : '0'; ?>%</td>
+								<td></td>
+								<td><?php _e('% New Visits','google-analytics-dashboard'); ?></td>
+							</tr>
+						</table>
+					</div>
+					<br style="clear: both" />
+				</div>
+			</div>
 
-    </div>
+		</div>
 
-<?php
-  }
+	<?php
+	}
 
-  function display_goals($gs_toggle_option)
-  {
-?>
-    <div style="position: relative; padding-top: 5px;" class="ie_layout">
-      <h4 style="position: absolute; top: 6px; left: 10px; background-color: #fff; padding-left: 5px; padding-right: 5px;">Goals <a id="toggle-goal-stats" href="#">(<?php echo $gs_toggle_option; ?>)</a></h4>
-      <hr style="border: solid #eee 1px"/><br/>
-    </div>
+	function display_goals( $gs_toggle_option ) {
+		?>
+		<div style="position: relative; padding-top: 5px;" class="ie_layout">
+			<h4 style="position: absolute; top: 6px; left: 10px; background-color: #fff; padding-left: 5px; padding-right: 5px;"><?php _e('Goals','google-analytics-dashboard'); ?>
+				<a id="toggle-goal-stats" href="#">(<?php echo $gs_toggle_option; ?>)</a></h4>
+			<hr style="border: solid #eee 1px" />
+			<br />
+		</div>
 
-    <div>
-      <div id="goal-stats" <?php if($gs_toggle_option == 'show') echo 'style="display: none"'; ?>>
-      <div style="text-align: left;">
-        <div style="width: 50%; float: left;">
-          <table>
-            <?php
-              if( get_option('gad_goal_one') )
-              {
-                echo '<tr><td>' . get_option('gad_goal_one') . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal1Completions'] . ' (' . round($this->ga_data->goal_data['ga:goal1Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2) . '%)</td></tr>';
-              }
-              if( get_option('gad_goal_two') !== false )
-              {
-                echo '<tr><td>' . get_option('gad_goal_two') . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal2Completions'] . ' (' . round($this->ga_data->goal_data['ga:goal2Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2) . '%)</td></tr>';
-              }
-            ?>
-          </table>
-        </div>
-        <div style="width: 50%; float: right;">
-          <table>
-            <?php
-              if( get_option('gad_goal_three') !== false )
-              {
-                echo '<tr><td>' . get_option('gad_goal_three') . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal3Completions'] . ' (' .  round($this->ga_data->goal_data['ga:goal3Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2) . '%)</td></tr>';
-              }
-              if( get_option('gad_goal_four') !== false ) 
-              {
-                echo '<tr><td>' . get_option('gad_goal_four') . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal4Completions'] . ' (' .  round($this->ga_data->goal_data['ga:goal4Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2) . '%)</td></tr>';
-              }
-            ?>
-          </table>
-        </div>
-        <br style="clear: both"/>
-      </div>
-      </div>
-    </div>
-<?php
-  }
+		<div>
+			<div id="goal-stats" <?php if ( $gs_toggle_option == 'show' ) {
+				echo 'style="display: none"';
+			} ?>>
+				<div style="text-align: left;">
+					<div style="width: 50%; float: left;">
+						<table>
+							<?php
+							if ( get_option( 'gad_goal_one' ) ) {
+								echo '<tr><td>' . get_option( 'gad_goal_one' ) . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal1Completions'] . ' (' . round( $this->ga_data->goal_data['ga:goal1Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2 ) . '%)</td></tr>';
+							}
+							if ( get_option( 'gad_goal_two' ) !== false ) {
+								echo '<tr><td>' . get_option( 'gad_goal_two' ) . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal2Completions'] . ' (' . round( $this->ga_data->goal_data['ga:goal2Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2 ) . '%)</td></tr>';
+							}
+							?>
+						</table>
+					</div>
+					<div style="width: 50%; float: right;">
+						<table>
+							<?php
+							if ( get_option( 'gad_goal_three' ) !== false ) {
+								echo '<tr><td>' . get_option( 'gad_goal_three' ) . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal3Completions'] . ' (' . round( $this->ga_data->goal_data['ga:goal3Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2 ) . '%)</td></tr>';
+							}
+							if ( get_option( 'gad_goal_four' ) !== false ) {
+								echo '<tr><td>' . get_option( 'gad_goal_four' ) . '</td><td width="20px">&nbsp;</td><td>' . $this->ga_data->goal_data['ga:goal4Completions'] . ' (' . round( $this->ga_data->goal_data['ga:goal4Completions'] / $this->ga_data->summary_data['value']['ga:visits'] * 100, 2 ) . '%)</td></tr>';
+							}
+							?>
+						</table>
+					</div>
+					<br style="clear: both" />
+				</div>
+			</div>
+		</div>
+	<?php
+	}
 
-  function display_extended_stats($es_toggle_option)
-  {
-?>
+	function display_extended_stats( $es_toggle_option ) {
+		?>
 
-    <div style="position: relative; padding-top: 5px;" class="ie_layout">
-      <h4 style="position: absolute; top: 6px; left: 10px; background-color: #fff; padding-left: 5px; padding-right: 5px;">Extended Stats <a id="toggle-extended-stats" href="#">(<?php echo $es_toggle_option; ?>)</a></h4>
-      <hr style="border: solid #eee 1px"/><br/>
-    </div>
+		<div style="position: relative; padding-top: 5px;" class="ie_layout">
+			<h4 style="position: absolute; top: 6px; left: 10px; background-color: #fff; padding-left: 5px; padding-right: 5px;"><?php _e('Extended Stats','google-analytics-dashboard'); ?>
+				<a id="toggle-extended-stats" href="#">(<?php echo $es_toggle_option; ?>)</a></h4>
+			<hr style="border: solid #eee 1px" />
+			<br />
+		</div>
 
-    <div>
-      <div id="extended-stats" <?php if($es_toggle_option == 'show') echo 'style="display: none"'; ?>>
-        <div style="text-align: left; font-size: 90%;">
-          <div style="width: 50%; float: left;">
+		<div>
+			<div id="extended-stats" <?php if ( $es_toggle_option == 'show' ) {
+				echo 'style="display: none"';
+			} ?>>
+				<div style="text-align: left; font-size: 90%;">
+					<div style="width: 50%; float: left;">
 
-            <h4 class="heading"><?php echo __( 'Top Posts' ); ?></h4>
+						<h4 class="heading"><?php echo __( 'Top Posts', 'google-analytics-dashboard' ); ?></h4>
 
-            <div style="padding-top: 5px;">
-              <?php
-                  $z = 0;
-                  foreach($this->ga_data->pages as $page)
-                  {
-                    $url = $page['value'];
-                    $title = $page['children']['value'];
-                    $page_views = $page['children']['children']['ga:pageviews'];
-                    echo '<a href="' . $url . '">' . $title . '</a><br/> <div style="color: #666; padding-left: 5px; padding-bottom: 5px; padding-top: 2px;">' . $page_views . ' views</div>';
-                    $z++;
-                    if($z > 10) break;
-                  }
-              ?>
-            </div>
-          </div>
+						<div style="padding-top: 5px;">
+							<?php
+							$z = 0;
+							foreach ( $this->ga_data->pages as $page ) {
+								$url        = $page['value'];
+								$title      = $page['children']['value'];
+								$page_views = $page['children']['children']['ga:pageviews'];
+								echo '<a href="' . $url . '">' . $title . '</a><br/> <div style="color: #666; padding-left: 5px; padding-bottom: 5px; padding-top: 2px;">' . $page_views . ' views</div>';
+								$z ++;
+								if ( $z > 10 ) {
+									break;
+								}
+							}
+							?>
+						</div>
+					</div>
 
-          <div style="width: 50%; float: right;">
-            <h4 class="heading"><?php echo __( 'Top Searches' ); ?></h4>
+					<div style="width: 50%; float: right;">
+						<h4 class="heading"><?php echo __( 'Top Searches', 'google-analytics-dashboard' ); ?></h4>
 
-            <div style="padding-top: 5px; padding-bottom: 15px;">
-              <table width="100%">
-                <?php
-                    $z = 0;
-                    foreach($this->ga_data->keywords as $keyword => $count)
-                    {
-                      if($keyword != "(not set)")
-                      {
-                        echo '<tr>';
-                        echo '<td>' . $count . '</td><td>&nbsp;</td><td> ' . $keyword . '</td>';
-                        echo '</tr>';
-                        $z++;
-                      }
-                      if($z > 10) break;
-                    }
-                ?>
-              </table>
-            </div>
+						<div style="padding-top: 5px; padding-bottom: 15px;">
+							<table width="100%">
+								<?php
+								$z = 0;
+								foreach ( $this->ga_data->keywords as $keyword => $count ) {
+									if ( $keyword != "(not set)" ) {
+										echo '<tr>';
+										echo '<td>' . $count . '</td><td>&nbsp;</td><td> ' . $keyword . '</td>';
+										echo '</tr>';
+										$z ++;
+									}
+									if ( $z > 10 ) {
+										break;
+									}
+								}
+								?>
+							</table>
+						</div>
 
-            <h4 class="heading"><?php echo __( 'Top Referers' ); ?></h4>
+						<h4 class="heading"><?php echo __( 'Top Referrers', 'google-analytics-dashboard' ); ?></h4>
 
-            <div style="padding-top: 5px;">
-              <table width="100%">
-                <?php
-                    $z = 0;
-                    foreach($this->ga_data->sources as $source => $count)
-                    {
-                      echo '<tr>';
-                      echo '<td>' . $count . '</td><td>&nbsp;</td><td> ' . $source . '</td>';
-                      echo '</tr>';
-                      $z++;
-                      if($z > 10) break;
-                    }
-                ?>
-              </table>
-            </div>
-          </div>
-          <br style="clear: both"/>
-        </div>
-      </div>
+						<div style="padding-top: 5px;">
+							<table width="100%">
+								<?php
+								$z = 0;
+								foreach ( $this->ga_data->sources as $source => $count ) {
+									echo '<tr>';
+									echo '<td>' . $count . '</td><td>&nbsp;</td><td> ' . $source . '</td>';
+									echo '</tr>';
+									$z ++;
+									if ( $z > 10 ) {
+										break;
+									}
+								}
+								?>
+							</table>
+						</div>
+					</div>
+					<br style="clear: both" />
+				</div>
+			</div>
 
-    </div>
+		</div>
 
-<?php
-  }
+	<?php
+	}
 
-  /**
-   * Takes a time in seconds and turns it into a string with the format
-   * of hours:minutes:seconds
-   *
-   * @return string in the format hours:minutes:seconds
-   */
-  function convert_seconds_to_time($time_in_seconds)
-  {
-    $hours = floor($time_in_seconds / (60 * 60));
-    $minutes = floor(($time_in_seconds - ($hours * 60 * 60)) / 60);
-    $seconds = $time_in_seconds - ($minutes * 60) - ($hours * 60 * 60);
+	/**
+	 * Takes a time in seconds and turns it into a string with the format
+	 * of hours:minutes:seconds
+	 *
+	 * @param int $time_in_seconds
+	 *
+	 * @return string in the format hours:minutes:seconds
+	 */
+	function convert_seconds_to_time( $time_in_seconds ) {
+		$hours   = floor( $time_in_seconds / ( 60 * 60 ) );
+		$minutes = floor( ( $time_in_seconds - ( $hours * 60 * 60 ) ) / 60 );
+		$seconds = $time_in_seconds - ( $minutes * 60 ) - ( $hours * 60 * 60 );
 
-    return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-  }
+		return sprintf( '%02d:%02d:%02d', $hours, $minutes, $seconds );
+	}
 }
-?>
+

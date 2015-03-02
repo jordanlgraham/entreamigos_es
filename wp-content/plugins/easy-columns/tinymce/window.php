@@ -1,204 +1,204 @@
 <?php
-/*
-wp ez columns tinymce
-*/
-// look up for the path
-@ require('../../../../wp-config.php');
-
+while(!is_file('wp-load.php')){
+  if(is_dir('../')){ chdir('../'); }
+  else die('Could not find wp-load.php.');
+}
+require_once('wp-load.php');
 // check for rights
 if ( !is_user_logged_in() || !current_user_can('edit_posts') )
 	wp_die(__("You are not allowed to be here"));
-
+global $wp_scripts;
 global $wpdb;
-
-// get the options
-//$options = get_option('wpezcol_options');
-//$options['ctr']
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<title>WP Easy Columns</title>
+<title>Easy Columns</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
 .colPicker {
 	float: left;
-	width: 150px;
+	width: 180px;
+	border-collapse: separate;
+	border-spacing: 0.9em;
 }
 .colPicker tr {
 	cursor: hand;
 }
 .colPicker td {
-	background-color: #006599;
-	color: #fff;
-	text-align: center;
-	font-family: arial,helvetica,sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 4px;
-	border-top: 1px solid #0097E2;
-	border-left: 1px solid #0097E2;
-	border-right: 1px solid #003E5E;
-	border-bottom: 1px solid #003E5E;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 	cursor: hand;
+    background-color: #C3C3C3;
+    border-color: #333333;
+    border-radius: 7px 7px 7px 7px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 2px;
+    color: #4E4E4E;
+    font-family: arial,helvetica,sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px;
+    text-align: center;
 }
 </style>
-<script language="javascript" type="text/javascript" src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/utils/mctabs.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/utils/form_utils.js"></script>
-<script language="javascript" type="text/javascript">
+<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
+<script src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/utils/mctabs.js"></script>
+<script src="<?php echo get_option('siteurl') ?>/wp-includes/js/tinymce/utils/form_utils.js"></script>
+<script>
 var colTxt = ' ';
 function init() {
 	tinyMCEPopup.resizeToInnerSize();
 }
 
 function insertColumns(col) {
-	colTxt = ' ';
+	colTxt = '';
+	colClass = jQuery('#txtColClass').val().trim();
+	colClass = (colClass != '')? ' class="'+colClass+'"' : '' ;
 	switch(col)
 	{
 		/* single columns */
 		case 'quarter':
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
+			colTxt += '[ezcol_1quarter]Quarter Column[/ezcol_1quarter]';
 			break;
 		case 'half':
-			colTxt += '[wpcol_1half id="" class="" style=""]Half Column[/wpcol_1half] ';
+			colTxt += '[ezcol_1half]Half Column[/ezcol_1half]';
 			break;
 		case 'threequarter':
-			colTxt += '[wpcol_3quarter id="" class="" style=""]Three Quarter Column[/wpcol_3quarter] ';
+			colTxt += '[ezcol_3quarter]Three Quarter Column[/ezcol_3quarter]';
 			break;
 		case 'third':
-			colTxt += '[wpcol_1third id="" class="" style=""]Third Column[/wpcol_1third] ';
+			colTxt += '[ezcol_1third]Third Column[/ezcol_1third]';
 			break;
 		case 'twothirds':
-			colTxt += '[wpcol_2third id="" class="" style=""]Two Thirds Column[/wpcol_2third] ';
+			colTxt += '[ezcol_2third]Two Thirds Column[/ezcol_2third]';
 			break;
 		case 'onefifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
+			colTxt += '[ezcol_1fifth]One Fifth Column[/ezcol_1fifth]';
 			break;
 		case 'twofifths':
-			colTxt += '[wpcol_2fifth id="" class="" style=""]Two Fifths Column[/wpcol_2fifth] ';
+			colTxt += '[ezcol_2fifth]Two Fifths Column[/ezcol_2fifth]';
 			break;
 		case 'threefifths':
-			colTxt += '[wpcol_3fifth id="" class="" style=""]Three Fifths Column[/wpcol_3fifth] ';
+			colTxt += '[ezcol_3fifth]Three Fifths Column[/ezcol_3fifth]';
 			break;
 		case 'fourfifths':
-			colTxt += '[wpcol_4fifth id="" class="" style=""]Four Fifths Column[/wpcol_4fifth] ';
+			colTxt += '[ezcol_4fifth]Four Fifths Column[/ezcol_4fifth]';
 			break;
 
 		/* 1/3, 2/3 */
 		case '3third':
-			colTxt += '[wpcol_1third id="" class="" style=""]Third Column[/wpcol_1third] ';
-			colTxt += '[wpcol_1third id="" class="" style=""]Third Column[/wpcol_1third] ';
-			colTxt += '[wpcol_1third_end id="" class="" style=""]Third Column[/wpcol_1third_end] ';
+			colTxt += '[ezcol_1third'+colClass+']Third Column[/ezcol_1third] ';
+			colTxt += '[ezcol_1third'+colClass+']Third Column[/ezcol_1third] ';
+			colTxt += '[ezcol_1third_end'+colClass+']Third Column[/ezcol_1third_end]';
 			break;
 		case '1third2third':
-			colTxt += '[wpcol_1third id="" class="" style=""]Third Column[/wpcol_1third] ';
-			colTxt += '[wpcol_2third_end id="" class="" style=""]Two Thirds Column[/wpcol_2third_end] ';
+			colTxt += '[ezcol_1third'+colClass+']Third Column[/ezcol_1third] ';
+			colTxt += '[ezcol_2third_end'+colClass+']Two Thirds Column[/ezcol_2third_end]';
 			break;
 		case '2third1third':
-			colTxt += '[wpcol_2third id="" class="" style=""]Two Thirds Column[/wpcol_2third] ';
-			colTxt += '[wpcol_1third_end id="" class="" style=""]Third Column[/wpcol_1third_end] ';
+			colTxt += '[ezcol_2third'+colClass+']Two Thirds Column[/ezcol_2third] ';
+			colTxt += '[ezcol_1third_end'+colClass+']Third Column[/ezcol_1third_end]';
 			break;
 
 		/* 1/4, 1/2, 3/4 */
 		case '4quarter':
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1quarter_end id="" class="" style=""]Quarter Column[/wpcol_1quarter_end] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1quarter_end'+colClass+']Quarter Column[/ezcol_1quarter_end]';
 			break;
 		case '1half2quarter':
-			colTxt += '[wpcol_1half id="" class="" style=""]Half Column[/wpcol_1half] ';
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1quarter_end id="" class="" style=""]Quarter Column[/wpcol_1quarter_end] ';
+			colTxt += '[ezcol_1half'+colClass+']Half Column[/ezcol_1half] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1quarter_end'+colClass+']Quarter Column[/ezcol_1quarter_end]';
 			break;
 		case 'quarterhalfquarter':
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1half id="" class="" style=""]Half Column[/wpcol_1half] ';
-			colTxt += '[wpcol_1quarter_end id="" class="" style=""]Quarter Column[/wpcol_1quarter_end] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1half'+colClass+']Half Column[/ezcol_1half] ';
+			colTxt += '[ezcol_1quarter_end'+colClass+']Quarter Column[/ezcol_1quarter_end]';
 			break;
 		case '2quarter1half':
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_1half_end id="" class="" style=""]Half Column[/wpcol_1half_end] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_1half_end'+colClass+']Half Column[/ezcol_1half_end]';
 			break;
 		case '2half':
-			colTxt += '[wpcol_1half id="" class="" style=""]Half Column[/wpcol_1half] ';
-			colTxt += '[wpcol_1half_end id="" class="" style=""]Half Column[/wpcol_1half_end] ';
+			colTxt += '[ezcol_1half'+colClass+']Half Column[/ezcol_1half] ';
+			colTxt += '[ezcol_1half_end'+colClass+']Half Column[/ezcol_1half_end]';
 			break;
 		case '1quarter3quarter':
-			colTxt += '[wpcol_1quarter id="" class="" style=""]Quarter Column[/wpcol_1quarter] ';
-			colTxt += '[wpcol_3quarter_end id="" class="" style=""]Three Quarter Column[/wpcol_3quarter_end] ';
+			colTxt += '[ezcol_1quarter'+colClass+']Quarter Column[/ezcol_1quarter] ';
+			colTxt += '[ezcol_3quarter_end'+colClass+']Three Quarter Column[/ezcol_3quarter_end]';
 			break;
 		case '3quarter1quarter':
-			colTxt += '[wpcol_3quarter id="" class="" style=""]Three Quarter Column[/wpcol_3quarter] ';
-			colTxt += '[wpcol_1quarter_end id="" class="" style=""]Quarter Column[/wpcol_1quarter_end] ';
+			colTxt += '[ezcol_3quarter'+colClass+']Three Quarter Column[/ezcol_3quarter] ';
+			colTxt += '[ezcol_1quarter_end'+colClass+']Quarter Column[/ezcol_1quarter_end]';
 			break;
 
 		/* 1/5, 2/5, 3/5, 4/5 */
 		case '5fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 		case '2fifth31fifth':
-			colTxt += '[wpcol_2fifth id="" class="" style=""]Two Fifths Column[/wpcol_2fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_2fifth'+colClass+']Two Fifths Column[/ezcol_2fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 		case '1fifth2fifth21fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_2fifth id="" class="" style=""]Two Fifths Column[/wpcol_2fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_2fifth'+colClass+']Two Fifths Column[/ezcol_2fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 		case '21fifth2fifth1fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_2fifth id="" class="" style=""]Two Fifths Column[/wpcol_2fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_2fifth'+colClass+''+colClass+']Two Fifths Column[/ezcol_2fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 		case '31fifth2fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_2fifth_end id="" class="" style=""]Two Fifths Column[/wpcol_2fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_2fifth_end'+colClass+']Two Fifths Column[/ezcol_2fifth_end]';
 			break;
 		case '3fifth21fifth':
-			colTxt += '[wpcol_3fifth id="" class="" style=""]Three Fifths Column[/wpcol_3fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_3fifth'+colClass+']Three Fifths Column[/ezcol_3fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 		case '1fifth3fifth1fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_3fifth id="" class="" style=""]Three Fifths Column[/wpcol_3fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_3fifth'+colClass+']Three Fifths Column[/ezcol_3fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 		case '21fifth3fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_3fifth_end id="" class="" style=""]Three Fifths Column[/wpcol_3fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_3fifth_end'+colClass+']Three Fifths Column[/ezcol_3fifth_end]';
 			break;
 		case '2fifth3fifth':
-			colTxt += '[wpcol_2fifth id="" class="" style=""]Two Fifths Column[/wpcol_2fifth] ';
-			colTxt += '[wpcol_3fifth_end id="" class="" style=""]Three Fifths Column[/wpcol_3fifth_end] ';
+			colTxt += '[ezcol_2fifth'+colClass+']Two Fifths Column[/ezcol_2fifth] ';
+			colTxt += '[ezcol_3fifth_end'+colClass+']Three Fifths Column[/ezcol_3fifth_end]';
 			break;
 		case '3fifth2fifth':
-			colTxt += '[wpcol_3fifth id="" class="" style=""]Three Fifths Column[/wpcol_3fifth] ';
-			colTxt += '[wpcol_2fifth_end id="" class="" style=""]Two Fifths Column[/wpcol_2fifth_end] ';
+			colTxt += '[ezcol_3fifth'+colClass+']Three Fifths Column[/ezcol_3fifth] ';
+			colTxt += '[ezcol_2fifth_end'+colClass+']Two Fifths Column[/ezcol_2fifth_end]';
 			break;
 		case '1fifth4fifth':
-			colTxt += '[wpcol_1fifth id="" class="" style=""]One Fifth Column[/wpcol_1fifth] ';
-			colTxt += '[wpcol_4fifth_end id="" class="" style=""]Four Fifths Column[/wpcol_4fifth_end] ';
+			colTxt += '[ezcol_1fifth'+colClass+']One Fifth Column[/ezcol_1fifth] ';
+			colTxt += '[ezcol_4fifth_end'+colClass+']Four Fifths Column[/ezcol_4fifth_end]';
 			break;
 		case '4fifth1fifth':
-			colTxt += '[wpcol_4fifth id="" class="" style=""]Four Fifths Column[/wpcol_4fifth] ';
-			colTxt += '[wpcol_1fifth_end id="" class="" style=""]One Fifth Column[/wpcol_1fifth_end] ';
+			colTxt += '[ezcol_4fifth'+colClass+']Four Fifths Column[/ezcol_4fifth] ';
+			colTxt += '[ezcol_1fifth_end'+colClass+']One Fifth Column[/ezcol_1fifth_end]';
 			break;
 	}
 	insertText();
@@ -215,7 +215,7 @@ function insertDiv(){
 	divID = document.getElementById('txtID').value;
 	divClass = document.getElementById('txtClass').value;
 	divStyle = document.getElementById('txtStyle').value;
-	colTxt += '[wpdiv id="';
+	colTxt += '[ezdiv id="';
 	if(divID != ''){
 		colTxt += divID;
 	}
@@ -227,7 +227,7 @@ function insertDiv(){
 	if(divStyle != ''){
 		colTxt += divStyle;
 	}
-	colTxt += '"]Custom Div[/wpdiv] ';
+	colTxt += '"]Custom Div[/ezdiv] ';
 	insertText();
 }
 
@@ -238,16 +238,16 @@ function insertClear(){
 	switch(classType)
 	{
 		case 'left':
-			colTxt += '[wpcol_end_left]';
+			colTxt += '[ezcol_end_left]';
 			break;
 		case 'right':
-			colTxt += '[wpcol_end_right]';
+			colTxt += '[ezcol_end_right]';
 			break;
 		case 'both':
-			colTxt += '[wpcol_end_both]';
+			colTxt += '[ezcol_end_both]';
 			break;
 		case 'divider':
-			colTxt += '[wpcol_divider]';
+			colTxt += '[ezcol_divider]';
 			break;
 	}
 	insertText();
@@ -255,7 +255,11 @@ function insertClear(){
 
 function insertText(){
 	if(window.tinyMCE) {
-		window.tinyMCE.execInstanceCommand('content', 'mceInsertContent', false, colTxt);
+		if(window.tinyMCE.execInstanceCommand){
+			window.tinyMCE.execInstanceCommand('content', 'mceInsertContent', false, colTxt);	
+		} else {
+			window.tinymce.activeEditor.execCommand('mceInsertContent', false, colTxt);	
+		}
 		tinyMCEPopup.editor.execCommand('mceRepaint');
 		tinyMCEPopup.close();
 	}
@@ -291,14 +295,14 @@ select {
 
 		<div class="panel">
 
-			<table border="0" cellpadding="2" cellspacing="0" width="100%">
+			<table border="0" cellpadding="3" cellspacing="0" width="100%">
 			<tr>
 				<td class="hdrRow" colspan="3">
 					<h3>Insert Column Combinations</h3>
 				</td>
 			</tr>
 			</table>
-			
+
 			<!-- column combinations -->
 			<table cellspacing="0" cellpadding="0" border="0">
 				<tr>
@@ -307,17 +311,17 @@ select {
 						<strong>1/3, 2/3, 3/3</strong><br />
 						<table cellspacing="3" cellpadding="0" border="0" class="colPicker">
 							<tr onclick="insertColumns('3third')">
-								<td width="33%">1/3</td>
-								<td width="33%">1/3</td>
-								<td width="33%">1/3</td>
+								<td width="33.333%">1/3</td>
+								<td width="33.333%">1/3</td>
+								<td width="33.333%">1/3</td>
 							</tr>
 							<tr onclick="insertColumns('1third2third')">
-								<td width="33%">1/3</td>
+								<td width="33.333%">1/3</td>
 								<td colspan="2">2/3</td>
 							</tr>
 							<tr onclick="insertColumns('2third1third')">
-								<td width="33%" colspan="2">2/3</td>
-								<td width="33%">1/3</td>
+								<td width="33.333%" colspan="2">2/3</td>
+								<td width="33.333%">1/3</td>
 							</tr>
 						</table>
 
@@ -432,6 +436,17 @@ select {
 							</tr>
 						</table>
 
+					</td>
+				</tr>
+			</table>
+
+			<table border="0" cellpadding="2" cellspacing="0">
+				<tr>
+					<td class="hdrRow">
+						<h3><label for="txtColClass">Add Class to Columns:</label></h3>
+					</td>
+					<td>
+						<input type="text" id="txtColClass" size="10">
 					</td>
 				</tr>
 			</table>

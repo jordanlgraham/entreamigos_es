@@ -17,9 +17,9 @@
 
 			ed.addCommand('mceEZColumns', function() {
 				ed.windowManager.open({
-					file : url + '/window.php',
-					width : 638 + ed.getLang('ezColumns.delta_width', 0),
-					height : 438 + ed.getLang('ezColumns.delta_height', 0),
+					file : url + '/window.php?',
+					width : 780 + ed.getLang('ezColumns.delta_width', 0),
+					height : 560 + ed.getLang('ezColumns.delta_height', 0),
 					inline : 1
 				}, {
 					plugin_url : url // Plugin absolute URL
@@ -47,11 +47,11 @@
 		 */
 		getInfo : function() {
 			return {
-					longname  : 'WP EZ Columns',
-					author 	  : 'AffiliateTechHelp.com',
-					authorurl : 'http://affiliatetechhelp.com',
-					infourl   : 'http://affiliatetechhelp.com',
-					version   : "1.0"
+					longname  : 'Easy Columns',
+					author 	  : 'Pat Friedl',
+					authorurl : 'http://patfriedl.com',
+					infourl   : 'http://patfriedl.com',
+					version   : "2.1.3"
 			};
 		}
 	});

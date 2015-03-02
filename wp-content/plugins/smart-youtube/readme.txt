@@ -2,11 +2,11 @@
 Contributors: freediver
 Donate link: https://www.networkforgood.org/donation/MakeDonation.aspx?ORGID2=520781390
 Tags: youtube, video, play, media, Post, posts, admin, metacafe, liveleak, vimeo, facebook, thumbnails
-Requires at least: 2.0
-Tested up to: 3.3.2
+Requires at least: 2.3
+Tested up to: 4.1
 Stable tag: trunk
 
-Smart Youtube is a professional WordPress Video plugin that allows you to easily insert videos/playlists into your post, comments and in your RSS feed. The plugin is designed to be small and fast and not use any external resources.
+Smart Youtube is a professional WordPress Video plugin that allows you to easily insert videos/playlists into your post from all major video services. The plugin is designed to be small and fast and not use any external resources.
 
 == Description == 
 
@@ -37,17 +37,49 @@ http://www.youtube.com/watch?v=zlfKdbWwruY
 
 **Related plugins:**
 
-* [Theme Test Drive](http://wordpress.org/extend/plugins/theme-test-drive/)
-* [WP Quick Deploy](http://wordpress.org/extend/plugins/wp-quick-deploy/)
+* [SEO Friendly Images](http://wordpress.org/extend/plugins/seo-image/)
 
-If you like what I do in WordPress, you will also like [ManageWP](http://managewp.com "Manage WordPress sites") service.
-
-For updates, you can check out [my blog](http://www.prelovac.com/vladimir/) or follow me on Twitter [@vprelovac](http://twitter.com/vprelovac).
+Feel free to check out my [my blog](http://www.prelovac.com/vladimir/).
 
 
 
 
 == Changelog ==
+
+= 4.3 =
+* Fixed notice with enquue scripts
+* Modern YouYube embed method made default
+* Multiple small fixes
+
+= 4.2.6 =
+* Better support for https sites
+
+= 4.2.5 =
+* Fixed Vimeo compatibility
+
+= 4.2.4 =
+* Made og:image tag optional
+
+
+= 4.2.3 =
+* Fixed Facebook sharing compatibility (correct image displayed)
+
+= 4.2.2=
+* Added colorbox compatibility
+
+
+= 4.2.1=
+* Added support for center padding
+
+= 4.2.0 =
+* Updated to latest Colorbox libraries
+
+= 4.1.9 =
+* Fixed HTML validation
+* Colorbox now displayed on archive pages as well
+
+= 4.1.8 = 
+* 3.5 compatiblity
 
 = 4.1.7 =
 * New playlist format supported
