@@ -1,0 +1,231 @@
+msgid ""
+msgstr "MIME-Version: 1.0\n"
+
+#. Name.
+msgid "Better WordPress reCAPTCHA (with no CAPTCHA reCAPTCHA)"
+msgstr ""
+
+#. Short description.
+msgid ""
+"This plugin utilizes Google reCAPTCHA to help your blog stay clear of spams.\n"
+"BWP reCAPTCHA supports no CAPTCHA reCAPTCHA, Contact Form 7 and Akismet."
+msgstr ""
+
+#. Screenshot description.
+msgid "reCAPTCHA added to Comment Form."
+msgstr ""
+
+#. Screenshot description.
+msgid "reCAPTCHA added to WordPress Login Form."
+msgstr ""
+
+#. Screenshot description.
+msgid "reCAPTCHA added to Blog Registration Form (multi-site enabled)."
+msgstr ""
+
+#. Screenshot description.
+msgid "reCAPTCHA added to Contact Form 7."
+msgstr ""
+
+#. Screenshot description.
+msgid "reCAPTCHA version 1 added to Comment Form."
+msgstr ""
+
+#. Found in description list item.
+msgid "Choose to treat invalid captcha as spam or validation error"
+msgstr ""
+
+#. Found in description list item.
+msgid "Customize the error message when captcha is invalid"
+msgstr ""
+
+#. Found in description list item.
+msgid "Hide captcha for qualified visitors."
+msgstr ""
+
+#. Found in description list item.
+msgid "You can position captcha before or after the comment field"
+msgstr ""
+
+#. Found in description list item.
+msgid "Control how the plugin reacts when captcha response is invalid"
+msgstr ""
+
+#. Found in description list item.
+msgid "Set error message when captcha response is invalid"
+msgstr ""
+
+#. Found in description list item.
+msgid "Choose between 2 default themes"
+msgstr ""
+
+#. Found in description list item.
+msgid "Normal or compact size"
+msgstr ""
+
+#. Found in description list item.
+msgid "More than 50 languages"
+msgstr ""
+
+#. Found in description list item.
+msgid "Use built-in languages or add custom translations"
+msgstr ""
+
+#. Found in description list item.
+msgid "And more..."
+msgstr ""
+
+#. Found in description list item.
+msgid "Found a bug? Have a feature request? <a href=\"http://betterwp.net/wordpress-plugins/bwp-recaptcha/#report-issues\">Let me know</a>!"
+msgstr ""
+
+#. Found in description list item.
+msgid "Follow me on <a href=\"http://twitter.com/0dd0ne0ut\">Twitter</a>."
+msgstr ""
+
+#. Found in description list item.
+msgid "Check out <a href=\"http://feeds.feedburner.com/BetterWPnet\">latest WordPress Tips and Ideas</a> from BetterWP.net."
+msgstr ""
+
+#. Found in description list item.
+msgid "English (default)"
+msgstr ""
+
+#. Found in description list item.
+msgid "Spanish - Espanol (es_ES) - Thanks to Ivan Leomuro!"
+msgstr ""
+
+#. Found in description list item.
+msgid "Hungarian (hu_HU). Thanks to <a href=\"http://helloftranslations.net\">Attila Porvay</a>"
+msgstr ""
+
+#. Found in description list item.
+msgid "French (fr_FR). Thansk to <a href=\"http://christophe.guilloux.info\">Christophe GUILLOUX</a> and <strong>Raoul Pierre</strong>!"
+msgstr ""
+
+#. Found in description list item.
+msgid "German (de_DE). Thanks to <a href=\"http://wdbase.de/?p=585\">Andreas Reitberger</a>"
+msgstr ""
+
+#. Found in description list item.
+msgid "Croatian (hr). Thanks to Ivan!"
+msgstr ""
+
+#. Found in description paragraph.
+msgid ""
+"In the 21th century, spamming could be one of the most annoying problems for a\n"
+"website. Especially if you use some publishing platforms like WordPress, your\n"
+"blog WILL be spammed and no default methods will save you from such nightmare.\n"
+"This plugin utilizes the popular anti-spam library, Google reCAPTCHA, to help\n"
+"your blog stay clear of spams."
+msgstr ""
+
+#. Found in description paragraph.
+msgid ""
+"The new no CAPTCHA reCAPTCHA, Contact Form 7 and Akismet are supported out of\n"
+"the box."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Useful resources:</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<a href=\"http://betterwp.net/wordpress-tips/how-to-add-bwp-recaptcha-to-contact-form-7/\">How-to: Add BWP reCAPTCHA to Contact Form 7</a>."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<a href=\"http://betterwp.net/wordpress-tips/how-to-add-custom-translations-to-bwp-recaptcha/\">How-to: Add custom translations to reCAPTCHA (version 1 only)</a>."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<a href=\"http://betterwp.net/wordpress-plugins/bwp-recaptcha/\">Official Documentation</a>."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Some Features</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Support this plugin</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Please don't forget to rate this plugin <a href=\"http://wordpress.org/support/view/plugin-reviews/bwp-recaptcha?filter=5\">5 shining stars</a> if you like it, thanks!"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Get in touch</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Languages</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Please <a href=\"http://betterwp.net/wordpress-tips/create-pot-file-using-poedit/\">help translate</a> this plugin!"
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "<a href=\"http://betterwp.net/wordpress-plugins/bwp-recaptcha/installation/\">View instructions with images</a>."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Display recaptcha error code when an unknown error occurs."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Add back support for PHP 5.2."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fix recaptcha v1's display in themes that define <code>table-layout: fixed</code>"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Add support for reCAPTCHA version 2"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Add an HTTPS setting for reCAPTCHA version 1"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Add support for Contact Form version 4.x"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Add support for custom login/register paths"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Change minimum PHP version required to 5.3.2"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Show the captcha to all users (including admins) by default"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Add a Croatian translation"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Layerthemes.com has become an official sponsor for BWP Plugins!"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fix Akismet integration not working properly"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Create session only when needed and on demand"
+msgstr ""
+
+#. Found in changelog paragraph.
+msgid "<a href=\"http://betterwp.net/wordpress-plugins/bwp-recaptcha/changelog/\">View the full changelog</a>"
+msgstr ""
+
+#. Found in faq paragraph.
+msgid "<a href=\"http://betterwp.net/wordpress-plugins/bwp-recaptcha/faq/\">View current FAQs</a>."
+msgstr ""
